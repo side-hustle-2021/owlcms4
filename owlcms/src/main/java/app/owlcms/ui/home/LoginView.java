@@ -48,7 +48,7 @@ public class LoginView extends Composite<VerticalLayout> implements AppLayoutAwa
 
     static Logger logger = (Logger) LoggerFactory.getLogger(LoginView.class);
 
-    public static final String LOGIN = "login";
+    public static final String LOGIN = "pinlogin";
 
     private PasswordField pinField = new PasswordField();
 

@@ -16,6 +16,11 @@ import com.vaadin.flow.server.VaadinSession;
 import app.owlcms.utils.LoggerUtils;
 import ch.qos.logback.classic.Logger;
 
+import app.owlcms.security.SecurityUtils;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import app.owlcms.ui.login.CustomLoginView;
+import com.vaadin.flow.component.UI;
+
 /**
  * Automatic configuration at startup of the various listeners for sessions, etc.
  *
@@ -43,10 +48,27 @@ public class ServiceListener implements VaadinServiceInitListener {
     @Override
     public void serviceInit(ServiceInitEvent event) {
         logger.debug("Vaadin Service Startup Configuration. {} {}", event.toString(), LoggerUtils.whereFrom());
+        event.getSource().addUIInitListener(uiEvent -> {
+            final UI ui = uiEvent.getUI();
+            ui.addBeforeEnterListener(this::beforeEnter);
+        });
+
         event.getSource().addSessionInitListener(sessionInitEvent -> {
             sessionInit(sessionInitEvent);
         });
+    }
 
+    /**
+     * Reroutes the user if they're not authorized to access the view.
+     *
+     * @param event
+     *            before navigation event with event details
+     */
+    private void beforeEnter(BeforeEnterEvent event) {
+        if (!CustomLoginView.class.equals(event.getNavigationTarget())
+            && !SecurityUtils.isUserLoggedIn()) {
+            event.rerouteTo(CustomLoginView.class);
+        }
     }
 
     // session init listener will be called whenever a VaadinSession is created

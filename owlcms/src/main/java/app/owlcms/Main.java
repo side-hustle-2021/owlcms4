@@ -41,12 +41,17 @@ import app.owlcms.utils.ResourceWalker;
 import app.owlcms.utils.StartupUtils;
 import ch.qos.logback.classic.Logger;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
 /**
  * Main class for launching owlcms through an embedded jetty server.
  *
  * @author Jean-François Lamy
  */
-public class Main {
+@SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)
+public class Main extends SpringBootServletInitializer{
 
     public final static Logger logger = (Logger) LoggerFactory.getLogger(Main.class);
 

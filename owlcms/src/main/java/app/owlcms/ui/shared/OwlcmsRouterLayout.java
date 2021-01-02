@@ -178,8 +178,11 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
                                         .executeJs("window.open('https://jflamy.github.io/owlcms4/#/index','_blank')")))
                         // .add(new LeftNavigationItem(RESULT_DOCUMENTS, new Icon("image", "brightness-2"),
                         // ResultsNavigationContent.class))
-                        .addToSection(FOOTER, new LeftNavigationItem(INFO, new Icon("icons:info-outline"),
+                        .add(new LeftNavigationItem(INFO, new Icon("icons:info-outline"),
                                 InfoNavigationContent.class))
+                        .addToSection(FOOTER, new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
+                                clickEvent -> UI.getCurrent().getPage()
+                                        .executeJs("window.open('/logout','_self')")))
                         .build())
                 .build();
 
