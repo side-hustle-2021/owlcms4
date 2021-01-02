@@ -13,6 +13,7 @@ import com.vaadin.flow.theme.Theme;
 @Route("login")
 @PageTitle("Login | Vaadin CRM")
 @Theme(value = Lumo.class, variant = Lumo.DARK)
+@SuppressWarnings("serial")
 public class CustomLoginView extends VerticalLayout implements BeforeEnterObserver {
 
     LoginForm login = new LoginForm();
