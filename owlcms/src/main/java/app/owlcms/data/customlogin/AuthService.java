@@ -3,6 +3,7 @@ package app.owlcms.data.customlogin;
 import org.springframework.stereotype.Service;
 
 @Service
+@SuppressWarnings("serial")
 public class AuthService {
 
     public class AuthException extends Exception {
