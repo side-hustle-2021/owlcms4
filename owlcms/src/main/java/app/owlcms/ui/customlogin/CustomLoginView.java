@@ -1,4 +1,4 @@
-package app.owlcms.ui.login;
+package app.owlcms.ui.customlogin;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
@@ -9,6 +9,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.router.RouterLink;
+
+import app.owlcms.data.customlogin.CustomUserRepository;
+import app.owlcms.data.customlogin.CustomUser;
+import java.util.List;
 
 @Route("login")
 @PageTitle("Login | Vaadin CRM")
@@ -19,6 +24,11 @@ public class CustomLoginView extends VerticalLayout implements BeforeEnterObserv
     LoginForm login = new LoginForm();
 
     public CustomLoginView() {
+        List<CustomUser> allusers = CustomUserRepository.findAll();
+        CustomUser zerouser = allusers.get(0);
+        String zerusername = zerouser.getUsername();
+
+
         addClassName("login-view");
         setSizeFull();
 
@@ -29,7 +39,8 @@ public class CustomLoginView extends VerticalLayout implements BeforeEnterObserv
 
         add(
             new H1("OWLCMS Login"),
-            login
+            login,
+            new RouterLink("Register", CustomRegisterView.class)
         );
     }
 

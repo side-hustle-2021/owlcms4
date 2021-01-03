@@ -56,6 +56,8 @@ import app.owlcms.utils.LoggerUtils;
 import app.owlcms.utils.StartupUtils;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import app.owlcms.data.customlogin.CustomUser;
+import app.owlcms.data.customlogin.CustomRole;
 
 /**
  * Class JPAService.
@@ -187,6 +189,8 @@ public class JPAService {
                 .add(Competition.class.getName())
                 .add(AgeGroup.class.getName())
                 .add(Config.class.getName())
+                .add(CustomUser.class.getName())
+                .add(CustomRole.class.getName())
                 .build();
         return vals;
     }

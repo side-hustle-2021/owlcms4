@@ -89,6 +89,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/styles/**",
 
 				// (development mode) H2 debugging console
-				"/h2-console/**");
+				"/h2-console/**",
+				
+				"/customactivate"
+				);
 	}
 }

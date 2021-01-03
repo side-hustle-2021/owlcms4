@@ -17,8 +17,10 @@ import app.owlcms.utils.LoggerUtils;
 import ch.qos.logback.classic.Logger;
 
 import app.owlcms.security.SecurityUtils;
+import app.owlcms.ui.customlogin.CustomLoginView;
+import app.owlcms.ui.customlogin.CustomRegisterView;
+
 import com.vaadin.flow.router.BeforeEnterEvent;
-import app.owlcms.ui.login.CustomLoginView;
 import com.vaadin.flow.component.UI;
 
 /**
@@ -66,6 +68,7 @@ public class ServiceListener implements VaadinServiceInitListener {
      */
     private void beforeEnter(BeforeEnterEvent event) {
         if (!CustomLoginView.class.equals(event.getNavigationTarget())
+            && !CustomRegisterView.class.equals(event.getNavigationTarget())
             && !SecurityUtils.isUserLoggedIn()) {
             event.rerouteTo(CustomLoginView.class);
         }
