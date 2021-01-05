@@ -1,27 +1,43 @@
 package app.owlcms.data.customlogin;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
-@SuppressWarnings("serial")
-public class AuthService {
+public class AuthService implements UserDetailsService{
 
     public class AuthException extends Exception {
-
     }
 
-    public static void register(String username, String password) {
-        CustomUser user = CustomUserRepository.save(new CustomUser(username, password, CustomRole.USER));
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+        CustomUser customuser = CustomUserRepository.getByUsername(username);
+        if (customuser == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        UserDetails user = User.withUsername(customuser.getUsername())
+                            .password(customuser.getPassword())
+                            .authorities(customuser.getRole().toString()).build();
+
+        return user;
+    }
+
+    public static CustomUser register(String username, String password, CustomRole role) {
+        CustomUser user = CustomUserRepository.save(new CustomUser(username, password, role));
         System.out.println("http://localhost:8080/customactivate?code=" + user.getActivationCode());
+        return user;
     }
 
-    public void activate(String activationCode) throws AuthException {
+    public static void activate(String activationCode) throws Exception {
         CustomUser user = CustomUserRepository.getByActivationCode(activationCode);
         if (user != null) {
             user.setActive(true);
             CustomUserRepository.save(user);
         } else {
-            throw new AuthException();
+            throw new Exception();
         }
     }
 }

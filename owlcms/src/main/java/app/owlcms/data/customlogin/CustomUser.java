@@ -1,22 +1,28 @@
 package app.owlcms.data.customlogin;
 
 import app.owlcms.data.AbstractEntity;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.Entity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.Column;
 
 @Entity
 public class CustomUser extends AbstractEntity {
 
+    @Column(unique = true)
     private String username;
-    private String passwordSalt;
-    private String passwordHash;
+    private String password;
     private CustomRole role;
     private String activationCode;
     private boolean active;
 
     private static CustomUser customuser;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public CustomUser() {
     }
@@ -24,13 +30,8 @@ public class CustomUser extends AbstractEntity {
     public CustomUser(String username, String password, CustomRole role) {
         this.username = username;
         this.role = role;
-        this.passwordSalt = RandomStringUtils.random(32);
-        this.passwordHash = DigestUtils.sha1Hex(password + passwordSalt);
+        this.password = passwordEncoder.encode(password);
         this.activationCode = RandomStringUtils.randomAlphanumeric(32);
-    }
-
-    public boolean checkPassword(String password) {
-        return DigestUtils.sha1Hex(password + passwordSalt).equals(passwordHash);
     }
 
     public String getUsername() {
@@ -41,20 +42,12 @@ public class CustomUser extends AbstractEntity {
         this.username = username;
     }
 
-    public String getPasswordSalt() {
-        return passwordSalt;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public CustomRole getRole() {
@@ -82,9 +75,6 @@ public class CustomUser extends AbstractEntity {
     }
 
     public static CustomUser getCurrent() {
-        if (customuser == null) {
-            customuser = CustomUserRepository.findAll().get(0);
-        }
         return customuser;
     }
 

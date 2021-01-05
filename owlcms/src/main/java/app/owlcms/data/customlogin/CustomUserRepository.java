@@ -65,6 +65,22 @@ public class CustomUserRepository {
         return current;
     }
 
+    @SuppressWarnings("unchecked")
+    public static CustomUser getByUsername(String username) {
+
+        JPAService.runInTransaction(em -> {
+            Query query = em.createQuery("select u from CustomUser u where u.username=:username");
+            query.setParameter("username", username);
+
+            CustomUser nc = (CustomUser) query.getResultList().stream().findFirst().orElse(null);
+            CustomUser.setCurrent(nc);
+            return nc;
+        });
+
+        CustomUser current = CustomUser.getCurrent();
+        return current;
+    }
+
     /**
      * Save.
      *
