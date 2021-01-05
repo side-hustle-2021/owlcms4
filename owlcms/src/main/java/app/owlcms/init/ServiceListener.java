@@ -22,6 +22,7 @@ import app.owlcms.ui.customlogin.CustomRegisterView;
 
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.component.UI;
+import app.owlcms.data.customlogin.CustomUserRepository;
 
 /**
  * Automatic configuration at startup of the various listeners for sessions, etc.
@@ -40,6 +41,7 @@ public class ServiceListener implements VaadinServiceInitListener {
      * Instantiates a new service listener.
      */
     public ServiceListener() {
+        CustomUserRepository.createAdminIfNotExists();
     }
 
     /*

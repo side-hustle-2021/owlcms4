@@ -4,22 +4,26 @@ import app.owlcms.data.customlogin.AuthService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.Route;
 import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
-import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.router.HasDynamicTitle;
+import com.vaadin.flow.router.Location;
+import com.vaadin.flow.component.UI;
 
 import app.owlcms.data.customlogin.CustomUser;
 import app.owlcms.data.customlogin.CustomRole;
 import app.owlcms.data.customlogin.CustomUserRepository;
+import app.owlcms.ui.shared.OwlcmsRouterLayout;
+import app.owlcms.ui.shared.BaseNavigationContent;
+import app.owlcms.components.NavigationPage;
 
-@Route("customregister")
+@Route(value = "customregister", layout = OwlcmsRouterLayout.class)
 @SuppressWarnings("serial")
-public class CustomRegisterView extends VerticalLayout {
+public class CustomRegisterView extends BaseNavigationContent implements NavigationPage, HasDynamicTitle {
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CustomRegisterView.class);
 
@@ -27,8 +31,7 @@ public class CustomRegisterView extends VerticalLayout {
 
         addClassName("register-view");
         setSizeFull();
-
-        setJustifyContentMode(JustifyContentMode.CENTER);
+        
         setAlignItems(Alignment.CENTER);
 
         TextField username = new TextField("Username");
@@ -47,13 +50,12 @@ public class CustomRegisterView extends VerticalLayout {
                 role,
                 password1,
                 password2,
-                new Button("Send", event -> register(
+                new Button("Save", event -> register(
                         username.getValue(),
                         password1.getValue(),
                         password2.getValue(),
                         role.getValue()
-                )),
-                new RouterLink("Login", CustomLoginView.class)
+                ))
         );
     }
 
@@ -82,5 +84,41 @@ public class CustomRegisterView extends VerticalLayout {
 
     void showNotification(String notificationText){
         Notification.show(notificationText, 3000, Notification.Position.TOP_CENTER);
+    }
+
+    @Override
+    public Location getLocation() {
+        return this.location;
+    }
+
+    @Override
+    public UI getLocationUI() {
+        return this.locationUI;
+    }
+
+    /**
+     * @see com.vaadin.flow.router.HasDynamicTitle#getPageTitle()
+     */
+    @Override
+    public String getPageTitle() {
+        return getTranslation("RegisterUser");
+    }
+
+    /**
+     * @see app.owlcms.ui.shared.BaseNavigationContent#getTitle()
+     */
+    @Override
+    protected String getTitle() {
+        return getTranslation("RegisterUser");
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public void setLocationUI(UI locationUI) {
+        this.locationUI = locationUI;
     }
 }

@@ -9,7 +9,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.router.RouterLink;
 
 @Route("login")
 @PageTitle("Login | Vaadin CRM")
@@ -31,8 +30,7 @@ public class CustomLoginView extends VerticalLayout implements BeforeEnterObserv
 
         add(
             new H1("OWLCMS Login"),
-            login,
-            new RouterLink("Register", CustomRegisterView.class)
+            login
         );
     }
 

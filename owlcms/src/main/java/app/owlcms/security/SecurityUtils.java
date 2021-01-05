@@ -10,6 +10,7 @@ import com.vaadin.flow.shared.ApplicationConstants;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import com.google.common.collect.Iterables;
 
 /**
  * SecurityUtils takes care of all such static operations that have to do with
@@ -33,6 +34,11 @@ public final class SecurityUtils {
     final String parameterValue = request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER);
     return parameterValue != null
         && Stream.of(RequestType.values()).anyMatch(r -> r.getIdentifier().equals(parameterValue));
+  }
+
+  public static String loggerInUserRole(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return Iterables.get(authentication.getAuthorities(), 0).toString();
   }
 
   /**

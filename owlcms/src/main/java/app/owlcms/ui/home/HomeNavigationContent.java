@@ -51,7 +51,7 @@ import ch.qos.logback.classic.Logger;
  *
  */
 @SuppressWarnings("serial")
-@Route(value = "", layout = OwlcmsRouterLayout.class)
+@Route(value = "home", layout = OwlcmsRouterLayout.class)
 public class HomeNavigationContent extends BaseNavigationContent implements NavigationPage, HasDynamicTitle {
 
     final private static Logger logger = (Logger) LoggerFactory.getLogger(HomeNavigationContent.class);

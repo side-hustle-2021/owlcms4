@@ -38,6 +38,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 				// Restrict access to our application.
 				.and().authorizeRequests()
 
+				.antMatchers(
+					"/customregister",
+					"/info/**",
+					"/home/**"
+				).access("hasAuthority('ADMIN')")
+
+				.antMatchers(
+					"/preparation/**",
+					"/lifting/**",
+					"/results/**"
+				).access("hasAuthority('ADMIN') or hasAuthority('ORGANIZER')")
+
 				// Allow all Vaadin internal requests.
 				.requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 

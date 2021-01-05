@@ -6,9 +6,6 @@
  */
 package app.owlcms.ui.shared;
 
-import static com.github.appreciated.app.layout.entity.Section.FOOTER;
-import static com.github.appreciated.app.layout.entity.Section.HEADER;
-
 import java.util.function.Consumer;
 
 import org.slf4j.LoggerFactory;
@@ -19,8 +16,6 @@ import com.github.appreciated.app.layout.component.applayout.LeftLayouts;
 import com.github.appreciated.app.layout.component.builder.AppLayoutBuilder;
 import com.github.appreciated.app.layout.component.menu.left.builder.LeftAppMenuBuilder;
 import com.github.appreciated.app.layout.component.menu.left.items.LeftClickableItem;
-import com.github.appreciated.app.layout.component.menu.left.items.LeftHeaderItem;
-import com.github.appreciated.app.layout.component.menu.left.items.LeftNavigationItem;
 import com.github.appreciated.app.layout.component.router.AppLayoutRouterLayout;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.HasElement;
@@ -29,7 +24,6 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.page.Viewport;
@@ -39,14 +33,10 @@ import com.vaadin.flow.server.PageConfigurator;
 
 import app.owlcms.i18n.Translator;
 import app.owlcms.init.OwlcmsFactory;
-import app.owlcms.ui.displayselection.DisplayNavigationContent;
-import app.owlcms.ui.home.HomeNavigationContent;
-import app.owlcms.ui.home.InfoNavigationContent;
-import app.owlcms.ui.lifting.LiftingNavigationContent;
-import app.owlcms.ui.preparation.PreparationNavigationContent;
-import app.owlcms.ui.results.ResultsNavigationContent;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+
+import app.owlcms.security.SecurityUtils;
 
 /**
  * OwlcmsRouterLayout.
@@ -159,36 +149,101 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
             variant = LeftLayouts.LeftResponsive.class;
         }
 
-        LeftNavigationItem home = new LeftNavigationItem(getTranslation("Home"), VaadinIcon.HOME.create(),
-                HomeNavigationContent.class);
+        String userrole = SecurityUtils.loggerInUserRole();
 
+        LeftAppMenuBuilder leftmenulayout;
+        //Roles: ADMIN, ATHLETE, REFEREE, ORGANIZER
+        if (userrole.equals("ADMIN")){
+            leftmenulayout = getAdminLayoutMenu();
+        }
+        else if(userrole.equals("ATHLETE")){
+            leftmenulayout = getAthleteLayoutMenu();
+        }
+        else if(userrole.equals("REFEREE")){
+            leftmenulayout = getRefereeLayoutMenu();
+        }
+        else if(userrole.equals("ORGANIZER")){
+            leftmenulayout = getOrganizerLayoutMenu();
+        }
+        else{
+            leftmenulayout = LeftAppMenuBuilder.get().add();
+        }
+        
         AppLayout appLayout = AppLayoutBuilder.get(variant).withTitle(getTranslation("OWLCMS_Top"))
                 .withIcon("/frontend/images/logo.png").withAppBar(AppBarBuilder.get().build())
-                .withAppMenu(LeftAppMenuBuilder.get().addToSection(HEADER, new LeftHeaderItem(null, "", null)).add(home)
-                        .add(new LeftNavigationItem(PREPARE_COMPETITION, new Icon("social:group-add"),
-                                PreparationNavigationContent.class))
-                        .add(new LeftNavigationItem(RUN_LIFTING_GROUP, new Icon("places:fitness-center"),
-                                LiftingNavigationContent.class))
-                        .add(new LeftNavigationItem(START_DISPLAYS, new Icon("hardware:desktop-windows"),
-                                DisplayNavigationContent.class))
-                        .add(new LeftNavigationItem(RESULT_DOCUMENTS, new Icon("maps:local-printshop"),
-                                ResultsNavigationContent.class))
-                        .add(new LeftClickableItem(DOCUMENTATION, new Icon("icons:help"),
-                                clickEvent -> UI.getCurrent().getPage()
-                                        .executeJs("window.open('https://jflamy.github.io/owlcms4/#/index','_blank')")))
-                        // .add(new LeftNavigationItem(RESULT_DOCUMENTS, new Icon("image", "brightness-2"),
-                        // ResultsNavigationContent.class))
-                        .add(new LeftNavigationItem(INFO, new Icon("icons:info-outline"),
-                                InfoNavigationContent.class))
-                        .addToSection(FOOTER, new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
-                                clickEvent -> UI.getCurrent().getPage()
-                                        .executeJs("window.open('/logout','_self')")))
-                        .build())
+                .withAppMenu(leftmenulayout.build())
                 .build();
 
         return appLayout;
     }
 
+    protected LeftAppMenuBuilder getAdminLayoutMenu(){
+        return LeftAppMenuBuilder.get()
+        .add(new LeftClickableItem("Home", new Icon("icons:home"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/home','_self')")))
+        .add(new LeftClickableItem("Prepare Competition", new Icon("social:group-add"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/preparation','_self')")))
+        .add(new LeftClickableItem("Run Lifting Group", new Icon("places:fitness-center"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/lifting','_self')")))
+        .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/displays','_self')")))
+        .add(new LeftClickableItem("Result Documents", new Icon("maps:local-printshop"),
+            clickEvent -> UI.getCurrent().getPage()
+                .executeJs("window.open('/results','_self')")))
+        .add(new LeftClickableItem("About", new Icon("icons:info-outline"),
+            clickEvent -> UI.getCurrent().getPage()
+                .executeJs("window.open('/info','_self')")))
+        .add(new LeftClickableItem("Register User", new Icon("social:person-add"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/customregister','_self')")))
+        .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/logout','_self')")));
+    }
+
+    protected LeftAppMenuBuilder getAthleteLayoutMenu(){
+        return LeftAppMenuBuilder.get()
+        .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/displays','_self')")))
+        .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/logout','_self')")));
+    }
+
+    protected LeftAppMenuBuilder getRefereeLayoutMenu(){
+        return LeftAppMenuBuilder.get()
+        .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/displays','_self')")))
+        .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/logout','_self')")));
+    }
+
+    protected LeftAppMenuBuilder getOrganizerLayoutMenu(){
+        return LeftAppMenuBuilder.get()
+        .add(new LeftClickableItem("Prepare Competition", new Icon("social:group-add"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/preparation','_self')")))
+        .add(new LeftClickableItem("Run Lifting Group", new Icon("places:fitness-center"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/lifting','_self')")))
+        .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/displays','_self')")))
+        .add(new LeftClickableItem("Result Documents", new Icon("maps:local-printshop"),
+            clickEvent -> UI.getCurrent().getPage()
+                .executeJs("window.open('/results','_self')")))
+        .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/logout','_self')")));
+    }
+    
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // crude workaround -- randomly getting "dark" due to multiple themes detected in app.

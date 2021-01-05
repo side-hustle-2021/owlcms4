@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import app.owlcms.data.jpa.JPAService;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 public class CustomUserRepository {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CustomUserRepository.class);
@@ -97,6 +98,21 @@ public class CustomUserRepository {
 
         CustomUser current = CustomUser.getCurrent();
         return current;
+    }
+
+    public static void createAdminIfNotExists(){
+        CustomUser adminuser = getByUsername("admin");
+
+        if (adminuser == null){
+            logger.info("Creating admin user ...");
+            String password = System.getenv("ADMIN_PASSWORD");
+            if (StringUtils.isEmpty(password)){
+                logger.error("Admin Password not set. It is null or empty");
+                System.exit(-1);
+            }
+            CustomUserRepository.save(new CustomUser("admin", password, CustomRole.ADMIN));
+            logger.info("Admin user created.");
+        }
     }
 
 }
