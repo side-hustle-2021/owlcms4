@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
+@SuppressWarnings("serial")
 public class AuthService implements UserDetailsService{
 
     public class AuthException extends Exception {

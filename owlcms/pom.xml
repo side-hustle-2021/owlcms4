@@ -491,7 +491,7 @@
                     </fileset>
                   </filesets>
                 </configuration>
-              </plugin>
+            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -509,7 +509,6 @@
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
-
             <build>
                 <plugins>
                     <plugin>
@@ -687,6 +686,21 @@
                                         </fileSet>
                                     </fileSets>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>2.3.2.RELEASE</version>
+                        <configuration>
+                            <mainClass>app.owlcms.Main</mainClass>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

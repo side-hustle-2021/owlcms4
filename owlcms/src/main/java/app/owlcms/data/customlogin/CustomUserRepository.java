@@ -104,9 +104,11 @@ public class CustomUserRepository {
         CustomUser adminuser = getByUsername("admin");
 
         if (adminuser == null){
+            System.out.println("Creating admin user ...");
             logger.info("Creating admin user ...");
             String password = System.getenv("ADMIN_PASSWORD");
             if (StringUtils.isEmpty(password)){
+                System.out.println("Admin Password not set. It is null or empty");
                 logger.error("Admin Password not set. It is null or empty");
                 System.exit(-1);
             }

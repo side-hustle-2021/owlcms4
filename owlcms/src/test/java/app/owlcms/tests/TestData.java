@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
+import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
 
@@ -86,6 +87,7 @@ public class TestData {
     protected static void createAthlete(EntityManager em, Random r, Athlete p, double nextDouble, int catLimit) {
         p.setBodyWeight(81 - nextDouble);
         p.setGender(Gender.M);
+        p.setFullBirthDate(LocalDate.parse("1981-01-01"));
         Category categ = CategoryRepository.findByGenderAgeBW(Gender.M, 40, p.getBodyWeight()).get(0);
         p.setCategory(em.contains(categ) ? categ : em.merge(categ));
     }
