@@ -1,9 +1,11 @@
 package app.owlcms.data.customlogin;
 
 import java.util.List;
+import java.util.LinkedList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.EntityManager;
 
 import org.slf4j.LoggerFactory;
 
@@ -134,13 +136,50 @@ public class CustomUserRepository {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static List<CustomUser> findFiltered(CustomRole customRole){
-        return JPAService.runInTransaction(em -> 
-            em.createQuery("select c from CustomUser c where role=:role")
-            .setParameter("role", customRole)
-            .getResultList()
-        );
+    public static List<CustomUser> findFiltered(String username, CustomRole role, Boolean active){
+        return JPAService.runInTransaction(em -> {
+            return filterQueryResults(em, username, role, active);
+        });
     }
 
+    @SuppressWarnings("unchecked")
+    public static List<CustomUser> filterQueryResults(EntityManager em, String username, 
+                CustomRole role, Boolean active){
+
+        String filterQuery = "select c from CustomUser c ";
+        List<String> whereList = new LinkedList<>();
+
+        if (username != null && !username.isEmpty()){
+            whereList.add("lower(c.username) like :username||'%'");
+        }
+
+        if (role != null){
+            whereList.add("c.role=:role");
+        }
+
+        if (active != null){
+            whereList.add("c.active=:active");
+        }
+
+        if (whereList.size() > 0) {
+            String allWhere = String.join(" and ", whereList);
+            filterQuery = filterQuery + " where " + allWhere;
+        }
+
+        Query query = em.createQuery(filterQuery);
+
+        if (username != null && !username.isEmpty()){
+            query.setParameter("username", username);
+        }
+
+        if (role != null){
+            query.setParameter("role", role);
+        }
+
+        if (active != null){
+            query.setParameter("active", active);
+        }
+        
+        return query.getResultList();
+    }
 }

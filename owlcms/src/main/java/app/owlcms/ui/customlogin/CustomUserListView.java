@@ -11,6 +11,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.vaadin.crudui.crud.CrudListener;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.BoxSizing;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.icon.VaadinIcon;
 
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
 import app.owlcms.data.customlogin.CustomUserRepository;
@@ -30,35 +34,78 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
     private OwlcmsCrudFormFactory<CustomUser> crudFormFactory;
     private OwlcmsRouterLayout routerLayout;
 
-    private ComboBox<CustomRole> customRoleFilter = new ComboBox<>();
+    private ComboBox<CustomRole> roleFilter = new ComboBox<>();
+    private TextField usernameFilter = new TextField();
+    private ComboBox<Boolean> activeFilter = new ComboBox<>();
 
     public CustomUserListView() {
         addClassName("user-list-view");
         setSizeFull();
-        
+        setBoxSizing(BoxSizing.BORDER_BOX);
         setAlignItems(Alignment.CENTER);
 
         Grid<CustomUser> grid = new Grid<>(CustomUser.class, false);
         grid.addColumn("username").setHeader("Username");
         grid.addColumn("role").setHeader("Role");
+        grid.addColumn("active").setHeader("Active");
         
-        OwlcmsCrudGrid<CustomUser> crudGrid = new OwlcmsCrudGrid<>(CustomUser.class, new OwlcmsGridLayout(CustomUser.class),
-                crudFormFactory, grid);
+        OwlcmsCrudGrid<CustomUser> crudGrid = new OwlcmsCrudGrid<>(
+            CustomUser.class, new OwlcmsGridLayout(CustomUser.class),
+            crudFormFactory, grid
+        );
+
         crudGrid.setCrudListener(this);
         crudGrid.setClickRowToUpdate(true);
+        
+        setUsernameFilter(crudGrid);
+        setRoleFilter(crudGrid);
+        setActiveFilter(crudGrid);
 
-        customRoleFilter.setPlaceholder("Role");
-        customRoleFilter.setItems(CustomRole.findAll());
-        customRoleFilter.setClearButtonVisible(true);
-        customRoleFilter.addValueChangeListener(e -> {
+        setClearFilters(crudGrid);
+        add(crudGrid);
+    }
+
+    public void setRoleFilter(OwlcmsCrudGrid<CustomUser> crudGrid){
+        roleFilter.setPlaceholder("Role");
+        roleFilter.setItems(CustomRole.findAll());
+        roleFilter.setClearButtonVisible(true);
+        roleFilter.addValueChangeListener(e -> {
             crudGrid.refreshGrid();
         });
-        customRoleFilter.setWidth("10em");
-        crudGrid.getCrudLayout().addFilterComponent(customRoleFilter);
+        roleFilter.setWidth("10em");
+        crudGrid.getCrudLayout().addFilterComponent(roleFilter);
+    }
 
-        this.setBoxSizing(BoxSizing.BORDER_BOX);
-        this.setSizeFull();
-        this.add(crudGrid);
+    public void setUsernameFilter(OwlcmsCrudGrid<CustomUser> crudGrid){
+        usernameFilter.setPlaceholder("Username");
+        usernameFilter.setClearButtonVisible(true);
+        usernameFilter.setValueChangeMode(ValueChangeMode.EAGER);
+        usernameFilter.addValueChangeListener(e -> {
+            crudGrid.refreshGrid();
+        });
+        usernameFilter.setWidth("10em");
+        crudGrid.getCrudLayout().addFilterComponent(usernameFilter);
+    }
+
+    public void setActiveFilter(OwlcmsCrudGrid<CustomUser> crudGrid){
+        activeFilter.setPlaceholder("Active");
+        activeFilter.setClearButtonVisible(true);
+        activeFilter.setItems(Boolean.TRUE, Boolean.FALSE);
+        activeFilter.addValueChangeListener(e -> {
+            crudGrid.refreshGrid();
+        });
+        activeFilter.setWidth("10em");
+        crudGrid.getCrudLayout().addFilterComponent(activeFilter);
+    }
+
+    public void setClearFilters(OwlcmsCrudGrid<CustomUser> crudGrid){
+        Button clearFilters = new Button(null, VaadinIcon.ERASER.create());
+        clearFilters.addClickListener(event -> {
+            usernameFilter.clear();
+            roleFilter.clear();
+            activeFilter.clear();
+        });
+        crudGrid.getCrudLayout().addFilterComponent(clearFilters);
     }
 
     @Override
@@ -95,7 +142,9 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
 
     @Override
     public Collection<CustomUser> findAll() {
-        List<CustomUser> all = CustomUserRepository.findFiltered(customRoleFilter.getValue());
+        List<CustomUser> all = CustomUserRepository.findFiltered(
+            usernameFilter.getValue(), roleFilter.getValue(), 
+            activeFilter.getValue());
         return all;
     }
 }
