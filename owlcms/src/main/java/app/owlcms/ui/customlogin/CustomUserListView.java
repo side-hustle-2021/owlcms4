@@ -9,7 +9,7 @@ import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Location;
 import com.vaadin.flow.component.UI;
 import java.util.List;
-// import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.Grid;
 
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
 import app.owlcms.ui.shared.BaseNavigationContent;
@@ -31,19 +31,18 @@ public class CustomUserListView extends BaseNavigationContent implements Navigat
         
         setAlignItems(Alignment.CENTER);
         
-        // List<CustomUser> customUserList = CustomUserRepository.findAll();
-        // Grid<CustomUser> grid = new Grid<>(CustomUser.class);
-        // grid.setItems(customUserList);
+        List<CustomUser> customUserList = CustomUserRepository.findAll();
+        Grid<CustomUser> grid = new Grid<>(CustomUser.class);
+        grid.setItems(customUserList);
 
-        // grid.removeColumnByKey("id");
-        // grid.removeColumnByKey("password");
-        // grid.removeColumnByKey("activationCode");
-        // grid.setPageSize(5);
-        // grid.setColumns("username", "role", "active");
+        grid.removeColumnByKey("id");
+        grid.removeColumnByKey("password");
+        grid.removeColumnByKey("activationCode");
+        grid.setColumns("username", "role", "active");
 
         add(
-                new H2("User list")
-                // grid
+                new H2("User list"),
+                grid
         );
     }
 
