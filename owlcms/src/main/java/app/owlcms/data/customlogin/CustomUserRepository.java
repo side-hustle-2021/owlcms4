@@ -134,4 +134,13 @@ public class CustomUserRepository {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static List<CustomUser> findFiltered(CustomRole customRole){
+        return JPAService.runInTransaction(em -> 
+            em.createQuery("select c from CustomUser c where role=:role")
+            .setParameter("role", customRole)
+            .getResultList()
+        );
+    }
+
 }

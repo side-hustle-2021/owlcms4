@@ -1,88 +1,101 @@
 package app.owlcms.ui.customlogin;
 
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.notification.Notification;
+import java.util.List;
+import java.util.Collection;
+
 import com.vaadin.flow.router.Route;
 import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
-import com.vaadin.flow.router.HasDynamicTitle;
-import com.vaadin.flow.router.Location;
-import com.vaadin.flow.component.UI;
-import java.util.List;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import org.vaadin.crudui.crud.CrudListener;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.orderedlayout.BoxSizing;
 
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
-import app.owlcms.ui.shared.BaseNavigationContent;
-import app.owlcms.components.NavigationPage;
 import app.owlcms.data.customlogin.CustomUserRepository;
 import app.owlcms.data.customlogin.CustomUser;
-
+import app.owlcms.data.customlogin.CustomRole;
+import app.owlcms.ui.crudui.OwlcmsCrudGrid;
+import app.owlcms.ui.crudui.OwlcmsCrudFormFactory;
+import app.owlcms.ui.crudui.OwlcmsGridLayout;
+import app.owlcms.ui.shared.OwlcmsContent;
 
 @Route(value = "customuserlist", layout = OwlcmsRouterLayout.class)
 @SuppressWarnings("serial")
-public class CustomUserListView extends BaseNavigationContent implements NavigationPage, HasDynamicTitle {
+public class CustomUserListView extends VerticalLayout implements CrudListener<CustomUser>, OwlcmsContent {
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CustomUserListView.class);
 
-    public CustomUserListView() {
+    private OwlcmsCrudFormFactory<CustomUser> crudFormFactory;
+    private OwlcmsRouterLayout routerLayout;
 
-        addClassName("register-view");
+    private ComboBox<CustomRole> customRoleFilter = new ComboBox<>();
+
+    public CustomUserListView() {
+        addClassName("user-list-view");
         setSizeFull();
         
         setAlignItems(Alignment.CENTER);
+
+        Grid<CustomUser> grid = new Grid<>(CustomUser.class, false);
+        grid.addColumn("username").setHeader("Username");
+        grid.addColumn("role").setHeader("Role");
         
-        List<CustomUser> customUserList = CustomUserRepository.fetchUsers(0, 5);
-        Grid<CustomUser> grid = new Grid<>(CustomUser.class);
-        grid.setItems(customUserList);
+        OwlcmsCrudGrid<CustomUser> crudGrid = new OwlcmsCrudGrid<>(CustomUser.class, new OwlcmsGridLayout(CustomUser.class),
+                crudFormFactory, grid);
+        crudGrid.setCrudListener(this);
+        crudGrid.setClickRowToUpdate(true);
 
-        grid.removeColumnByKey("id");
-        grid.removeColumnByKey("password");
-        grid.removeColumnByKey("activationCode");
-        grid.setColumns("username", "role", "active");
+        customRoleFilter.setPlaceholder("Role");
+        customRoleFilter.setItems(CustomRole.findAll());
+        customRoleFilter.setClearButtonVisible(true);
+        customRoleFilter.addValueChangeListener(e -> {
+            crudGrid.refreshGrid();
+        });
+        customRoleFilter.setWidth("10em");
+        crudGrid.getCrudLayout().addFilterComponent(customRoleFilter);
 
-        add(
-            new H2("User list"),
-            grid
-        );
-    }
-
-    void showNotification(String notificationText){
-        Notification.show(notificationText, 3000, Notification.Position.TOP_CENTER);
-    }
-
-    @Override
-    public Location getLocation() {
-        return this.location;
+        this.setBoxSizing(BoxSizing.BORDER_BOX);
+        this.setSizeFull();
+        this.add(crudGrid);
     }
 
     @Override
-    public UI getLocationUI() {
-        return this.locationUI;
+    public CustomUser add(CustomUser customUser) {
+        crudFormFactory.add(customUser);
+        return customUser;
     }
 
-    /**
-     * @see com.vaadin.flow.router.HasDynamicTitle#getPageTitle()
-     */
     @Override
     public String getPageTitle() {
-        return getTranslation("RegisterUser");
-    }
-
-    /**
-     * @see app.owlcms.ui.shared.BaseNavigationContent#getTitle()
-     */
-    @Override
-    protected String getTitle() {
-        return getTranslation("RegisterUser");
+        return getTranslation("Preparation_Registration");
     }
 
     @Override
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setRouterLayout(OwlcmsRouterLayout routerLayout) {
+        this.routerLayout = routerLayout;
     }
 
     @Override
-    public void setLocationUI(UI locationUI) {
-        this.locationUI = locationUI;
+    public CustomUser update(CustomUser customuser) {
+        return crudFormFactory.update(customuser);
+    }
+
+    @Override
+    public OwlcmsRouterLayout getRouterLayout() {
+        return routerLayout;
+    }
+
+    @Override
+    public void delete(CustomUser customUser) {
+        crudFormFactory.delete(customUser);
+        return;
+    }
+
+    @Override
+    public Collection<CustomUser> findAll() {
+        List<CustomUser> all = CustomUserRepository.findFiltered(customRoleFilter.getValue());
+        return all;
     }
 }
