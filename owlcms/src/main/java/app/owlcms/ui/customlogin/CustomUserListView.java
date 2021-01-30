@@ -31,7 +31,7 @@ public class CustomUserListView extends BaseNavigationContent implements Navigat
         
         setAlignItems(Alignment.CENTER);
         
-        List<CustomUser> customUserList = CustomUserRepository.findAll();
+        List<CustomUser> customUserList = CustomUserRepository.fetchUsers(0, 5);
         Grid<CustomUser> grid = new Grid<>(CustomUser.class);
         grid.setItems(customUserList);
 
@@ -41,8 +41,8 @@ public class CustomUserListView extends BaseNavigationContent implements Navigat
         grid.setColumns("username", "role", "active");
 
         add(
-                new H2("User list"),
-                grid
+            new H2("User list"),
+            grid
         );
     }
 

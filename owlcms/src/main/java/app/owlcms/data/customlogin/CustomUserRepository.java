@@ -53,16 +53,18 @@ public class CustomUserRepository {
     @SuppressWarnings("unchecked")
     public static List<CustomUser> fetchUsers(int offset, int limit){
         return JPAService.runInTransaction(em -> 
-            em.createQuery("select u from CustomUser u limit :limit offset :offset")
+            em.createNativeQuery("select * from CustomUser limit :limit offset :offset", CustomUser.class)
             .setParameter("limit", limit).setParameter("offset", offset)
-        .getResultList());
+            .getResultList()
+        );
     }
 
     @SuppressWarnings("unchecked")
     public static int getUsersCount(){
         return (int) JPAService.runInTransaction(em -> 
             em.createQuery("select count(u) from CustomUser u")
-        .getResultList().stream().findFirst().orElse(null));
+            .getResultList().stream().findFirst().orElse(0))
+        ;
     }
 
     @SuppressWarnings("unchecked")
