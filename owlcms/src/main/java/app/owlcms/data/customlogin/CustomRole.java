@@ -5,10 +5,11 @@ import java.util.EnumSet;
 
 public enum CustomRole {
 
-    ADMIN, ATHLETE, REFEREE, ORGANIZER;
+    ADMIN, ATHLETE, REFEREE, ORGANIZER, PUBLIC;
 
     public static Collection<CustomRole> findAll() {
-        return EnumSet.of(CustomRole.ADMIN, CustomRole.ATHLETE, CustomRole.REFEREE, CustomRole.ORGANIZER);
+        return EnumSet.of(CustomRole.ADMIN, CustomRole.ATHLETE, CustomRole.REFEREE, 
+            CustomRole.ORGANIZER, CustomRole.PUBLIC);
     }
 
 }

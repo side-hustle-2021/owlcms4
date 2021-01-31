@@ -156,6 +156,9 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
         if (userrole.equals("ADMIN")){
             leftmenulayout = getAdminLayoutMenu();
         }
+        else if(userrole.equals("PUBLIC")){
+            leftmenulayout = getAthleteLayoutMenu();
+        }
         else if(userrole.equals("ATHLETE")){
             leftmenulayout = getAthleteLayoutMenu();
         }

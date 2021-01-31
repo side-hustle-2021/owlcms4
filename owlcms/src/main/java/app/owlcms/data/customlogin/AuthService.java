@@ -21,7 +21,7 @@ public class AuthService implements UserDetailsService{
             throw new UsernameNotFoundException(username);
         }
         if (!customuser.isActive()){
-            throw new UsernameNotFoundException("User Inactive");
+            customuser.setRole(CustomRole.PUBLIC);
         }
         UserDetails user = User.withUsername(customuser.getUsername())
                             .password(customuser.getPassword())
