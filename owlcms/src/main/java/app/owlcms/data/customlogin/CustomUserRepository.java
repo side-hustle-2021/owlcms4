@@ -13,8 +13,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import org.apache.commons.lang3.StringUtils;
 
-import app.owlcms.data.customlogin.AuthService;
-
 public class CustomUserRepository {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CustomUserRepository.class);
     static {
