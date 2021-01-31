@@ -15,6 +15,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
 import app.owlcms.data.customlogin.CustomUserRepository;
@@ -45,9 +47,21 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
         setAlignItems(Alignment.CENTER);
 
         Grid<CustomUser> grid = new Grid<>(CustomUser.class, false);
+        
         grid.addColumn("username").setHeader("Username");
         grid.addColumn("role").setHeader("Role");
-        grid.addColumn("active").setHeader("Active");
+        grid.addColumn(
+            new ComponentRenderer<>(
+                customuser -> {
+                    Checkbox checkbox = new Checkbox();
+                    checkbox.setValue(customuser.isActive());                            
+                    checkbox.addValueChangeListener(
+                        event -> CustomUserRepository.updateActive(customuser)
+                    );
+                    return checkbox;
+                }
+            )
+        ).setHeader("Active");
         
         OwlcmsCrudGrid<CustomUser> crudGrid = new OwlcmsCrudGrid<>(
             CustomUser.class, new OwlcmsGridLayout(CustomUser.class),
@@ -64,6 +78,8 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
         setClearFilters(crudGrid);
         add(crudGrid);
     }
+
+    
 
     public void setRoleFilter(OwlcmsCrudGrid<CustomUser> crudGrid){
         roleFilter.setPlaceholder("Role");
