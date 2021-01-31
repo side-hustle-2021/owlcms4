@@ -191,7 +191,7 @@ public class CustomUserRepository {
         customuser.setActive(!customuser.isActive());
 
         JPAService.runInTransaction(em -> 
-            em.createNativeQuery("update CustomUser c set c.active=:active where c.id=:id", CustomUser.class)
+            em.createQuery("update CustomUser c set c.active=:active where c.id=:id")
             .setParameter("active", customuser.isActive()).setParameter("id", customuser.getId())
             .executeUpdate()
         );

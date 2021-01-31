@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.vaadin.flow.router.Route;
 import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.Level;
 import org.slf4j.LoggerFactory;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -28,11 +29,15 @@ import app.owlcms.ui.crudui.OwlcmsCrudFormFactory;
 import app.owlcms.ui.crudui.OwlcmsGridLayout;
 import app.owlcms.ui.shared.OwlcmsContent;
 
+
 @Route(value = "customuserlist", layout = OwlcmsRouterLayout.class)
 @SuppressWarnings("serial")
 public class CustomUserListView extends VerticalLayout implements CrudListener<CustomUser>, OwlcmsContent {
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CustomUserListView.class);
+    static {
+        logger.setLevel(Level.INFO);
+    }
 
     private OwlcmsCrudFormFactory<CustomUser> crudFormFactory;
     private OwlcmsRouterLayout routerLayout;
@@ -103,12 +108,15 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
     }
 
     public void updateCustomUserActive(CustomUser customuser, OwlcmsCrudGrid<CustomUser> crudGrid){
+        logger.info("Starting update active status for user: "+ customuser.getUsername());
         if (customuser.getUsername().toLowerCase().equals("admin")){
             Notification.show("Cannot change active status for the 'admin' user.");
             crudGrid.refreshGrid();
             return;
         }
+        logger.debug("Updating active status for user: " + customuser.getUsername());
         CustomUserRepository.updateActive(customuser);
+        logger.debug("Updated active status for user: " + customuser.getUsername());
         Notification.show(customuser.getUsername() + " set Active: " + customuser.isActive());
     }
 
