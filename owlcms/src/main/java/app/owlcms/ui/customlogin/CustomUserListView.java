@@ -17,6 +17,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.component.notification.Notification;
 
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
 import app.owlcms.data.customlogin.CustomUserRepository;
@@ -47,7 +48,15 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
         setAlignItems(Alignment.CENTER);
 
         Grid<CustomUser> grid = new Grid<>(CustomUser.class, false);
-        
+
+        OwlcmsCrudGrid<CustomUser> crudGrid = new OwlcmsCrudGrid<>(
+            CustomUser.class, new OwlcmsGridLayout(CustomUser.class),
+            crudFormFactory, grid
+        );
+
+        crudGrid.setCrudListener(this);
+        crudGrid.setClickRowToUpdate(true);
+
         grid.addColumn("username").setHeader("Username");
         grid.addColumn("role").setHeader("Role");
         grid.addColumn(
@@ -56,30 +65,52 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
                     Checkbox checkbox = new Checkbox();
                     checkbox.setValue(customuser.isActive());                            
                     checkbox.addValueChangeListener(
-                        event -> CustomUserRepository.updateActive(customuser)
+                        event -> updateCustomUserActive(customuser, crudGrid)
                     );
                     return checkbox;
                 }
             )
         ).setHeader("Active");
         
-        OwlcmsCrudGrid<CustomUser> crudGrid = new OwlcmsCrudGrid<>(
-            CustomUser.class, new OwlcmsGridLayout(CustomUser.class),
-            crudFormFactory, grid
-        );
-
-        crudGrid.setCrudListener(this);
-        crudGrid.setClickRowToUpdate(true);
-        
         setUsernameFilter(crudGrid);
         setRoleFilter(crudGrid);
         setActiveFilter(crudGrid);
+
+        grid.addColumn(
+            new ComponentRenderer<>(
+                customuser -> {
+                    Button button = new Button(null, VaadinIcon.TRASH.create());
+                    button.addClickListener(
+                        event -> deleteCustomUser(customuser, crudGrid)
+                    );
+                    return button;
+                }
+            )
+        ).setHeader("Delete");
 
         setClearFilters(crudGrid);
         add(crudGrid);
     }
 
-    
+    public void deleteCustomUser(CustomUser customuser, OwlcmsCrudGrid<CustomUser> crudGrid){
+        if (customuser.getUsername().toLowerCase().equals("admin")){
+            Notification.show("Cannot delete the 'admin' user.");
+            return;
+        }
+        CustomUserRepository.delete(customuser);
+        crudGrid.refreshGrid();
+        Notification.show("Deleted username: " + customuser.getUsername());
+    }
+
+    public void updateCustomUserActive(CustomUser customuser, OwlcmsCrudGrid<CustomUser> crudGrid){
+        if (customuser.getUsername().toLowerCase().equals("admin")){
+            Notification.show("Cannot change active status for the 'admin' user.");
+            crudGrid.refreshGrid();
+            return;
+        }
+        CustomUserRepository.updateActive(customuser);
+        Notification.show(customuser.getUsername() + " set Active: " + customuser.isActive());
+    }
 
     public void setRoleFilter(OwlcmsCrudGrid<CustomUser> crudGrid){
         roleFilter.setPlaceholder("Role");

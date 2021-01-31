@@ -40,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
 				.antMatchers(
 					"/customregister",
+					"/customuserlist",
 					"/info/**",
 					"/home/**"
 				).access("hasAuthority('ADMIN')")

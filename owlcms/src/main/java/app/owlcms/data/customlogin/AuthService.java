@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+
 @Service
 @SuppressWarnings("serial")
 public class AuthService implements UserDetailsService{
@@ -18,6 +19,9 @@ public class AuthService implements UserDetailsService{
         CustomUser customuser = CustomUserRepository.getByUsername(username);
         if (customuser == null) {
             throw new UsernameNotFoundException(username);
+        }
+        if (!customuser.isActive()){
+            throw new UsernameNotFoundException("User Inactive");
         }
         UserDetails user = User.withUsername(customuser.getUsername())
                             .password(customuser.getPassword())

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.EntityManager;
 
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +12,8 @@ import app.owlcms.data.jpa.JPAService;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import org.apache.commons.lang3.StringUtils;
+
+import app.owlcms.data.customlogin.AuthService;
 
 public class CustomUserRepository {
     private final static Logger logger = (Logger) LoggerFactory.getLogger(CustomUserRepository.class);
@@ -131,7 +132,12 @@ public class CustomUserRepository {
                 logger.error("Admin Password not set. It is null or empty");
                 System.exit(-1);
             }
-            CustomUserRepository.save(new CustomUser("admin", password, CustomRole.ADMIN));
+            adminuser = CustomUserRepository.save(new CustomUser("admin", password, CustomRole.ADMIN));
+            try {
+                AuthService.activate(adminuser.getActivationCode());    
+            } catch (Exception e) {
+                logger.error("Invalid link. User not found");
+            }
             logger.info("Admin user created.");
         }
     }
