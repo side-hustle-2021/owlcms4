@@ -24,7 +24,11 @@
             "name": "Debug (Launch)-Main<owlcms>",
             "request": "launch",
             "mainClass": "app.owlcms.Main",
-            "projectName": "owlcms"
+            "projectName": "owlcms",
+            "env": {
+                "REGISTER_API_TOKEN": "abcd",
+                "DEFAULT_USER_PASSWORD": "1234"
+            }
         },
         {
             "type": "java",

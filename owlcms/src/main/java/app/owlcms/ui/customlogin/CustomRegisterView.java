@@ -14,7 +14,6 @@ import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Location;
 import com.vaadin.flow.component.UI;
 
-import app.owlcms.data.customlogin.CustomUser;
 import app.owlcms.data.customlogin.CustomRole;
 import app.owlcms.data.customlogin.CustomUserRepository;
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
@@ -60,26 +59,33 @@ public class CustomRegisterView extends BaseNavigationContent implements Navigat
     }
 
     private void register(String username, String password1, String password2, CustomRole role) {
+        String notificationMessage = "";
+        notificationMessage = registerValidation(username, password1, password2, role);
+
+        if (notificationMessage == null){
+            AuthService.register(username, password1, role);
+            notificationMessage = "User Registered successfully.";
+        }
+
+        showNotification(notificationMessage);
+    }
+
+    public static String registerValidation(String username, String password1, String password2, CustomRole role){
+        String notificationMessage = null;
 
         if (username.trim().isEmpty()) {
-            showNotification("Enter a username");
+            notificationMessage = "Enter a username";
         } else if (role == null) {
-            showNotification("Select a Role");
+            notificationMessage = "Select a Role";
         } else if (password1.isEmpty()) {
-            showNotification("Enter a password");
+            notificationMessage = "Enter a password";
         } else if (!password1.equals(password2)) {
-            showNotification("Passwords don't match");
+            notificationMessage = "Passwords don't match";
         } else if (CustomUserRepository.getByUsername(username) != null ){
-            showNotification("Username already exists");
-        } else {
-            CustomUser user = AuthService.register(username, password1, role);
-            try {
-                AuthService.activate(user.getActivationCode());    
-            } catch (Exception e) {
-                logger.error("Invalid link. User not found");
-            }
-            showNotification("User Registered successfully.");
+            notificationMessage = "Username already exists";
         }
+
+        return notificationMessage;
     }
 
     void showNotification(String notificationText){
