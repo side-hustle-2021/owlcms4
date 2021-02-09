@@ -64,7 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 				        .failureUrl(LOGIN_FAILURE_URL)
 
 				// Configure logout
-				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
+				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL).invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID");
 	}
 
 	/**
@@ -95,7 +96,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 				// (development mode) H2 debugging console
 				"/h2-console/**",
 
-				"/customregisterapi/**"
+				"/customregisterapi/**",
+				"/customauthenticateapi/**"
 				);
 	}
 
