@@ -27,7 +27,7 @@
             "projectName": "owlcms",
             "env": {
                 "REGISTER_API_TOKEN": "abcd",
-                "DEFAULT_USER_PASSWORD": "1234"
+                "ACCESS_ALLOW_ORIGIN": "https://the646project.com"
             }
         },
         {

@@ -1,6 +1,7 @@
 package app.owlcms.ui.customlogin;
 
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -27,6 +28,7 @@ public class CustomLoginView extends VerticalLayout implements BeforeEnterObserv
 
         add(
             new H1("OWLCMS Login"),
+            new Label("Note: Username and Password used to signup for the646project.com"),
             login
         );
     }

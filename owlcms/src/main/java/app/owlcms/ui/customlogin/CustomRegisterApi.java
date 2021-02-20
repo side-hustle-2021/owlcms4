@@ -37,12 +37,14 @@ public class CustomRegisterApi extends HttpServlet {
 
         String authorizationToken = "";
         String username = "";
+        String password = "";
         CustomRole role = CustomRole.valueOf("PUBLIC");
 
         try{
             String body = req.getReader().lines().collect(Collectors.joining());
             JSONObject jsonObject = new JSONObject(body);
             username = jsonObject.getString("username");
+            password = jsonObject.getString("password");
             role = CustomRole.valueOf(jsonObject.getString("role").toUpperCase());
             authorizationToken = req.getHeader("Authorization");
         }
@@ -52,15 +54,15 @@ public class CustomRegisterApi extends HttpServlet {
             return;
         }
 
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(authorizationToken)){
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(authorizationToken) || 
+                StringUtils.isEmpty(password)){
             resp.setStatus(422);
-            resp.getWriter().print("Username, role or authorization token cannot be empty");
+            resp.getWriter().print("Username, role, password or authorization token cannot be empty");
             return;
         }
 
         String configuredApiToken = System.getenv("REGISTER_API_TOKEN");
-        String defaultUserPassword = System.getenv("DEFAULT_USER_PASSWORD");
-        if (StringUtils.isEmpty(configuredApiToken) || StringUtils.isEmpty(defaultUserPassword)){
+        if (StringUtils.isEmpty(configuredApiToken)){
             resp.setStatus(500);
             resp.getWriter().print("Missing configurations. Please contact system admin");
             return;
@@ -75,11 +77,11 @@ public class CustomRegisterApi extends HttpServlet {
         String respMessage = "";
         try{
             respMessage = CustomRegisterView.registerValidation(
-                                username, defaultUserPassword, defaultUserPassword, role);
+                                username, password, password, role);
             if (respMessage != null){
                 throw new Exception(respMessage);
             }
-            AuthService.register(username, defaultUserPassword, role);
+            AuthService.register(username, password, role);
         }
         catch (Exception e){
             resp.setStatus(500);

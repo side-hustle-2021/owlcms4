@@ -43,10 +43,15 @@ public class CustomAuthenticateApi extends HttpServlet{
 
         String authorizationToken = "";
         String username = "";
+        String password = "";
 
+        resp.addHeader("Access-Control-Allow-Origin", System.getenv("ACCESS_ALLOW_ORIGIN"));
+        resp.addHeader("Access-Control-Allow-Credentials", "true");
+        
         try{
             username = req.getParameter("username");
-            authorizationToken = req.getParameter("authorization");
+            password = req.getParameter("password");
+            authorizationToken = req.getParameter("Authorization");
         }
         catch (Exception e){
             resp.setStatus(422);
@@ -54,15 +59,15 @@ public class CustomAuthenticateApi extends HttpServlet{
             return;
         }
 
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(authorizationToken)){
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) 
+                || StringUtils.isEmpty(authorizationToken)){
             resp.setStatus(422);
-            resp.getWriter().print("Username or authorization token cannot be empty");
+            resp.getWriter().print("Username, password or authorization token cannot be empty");
             return;
         }
 
         String configuredApiToken = System.getenv("REGISTER_API_TOKEN");
-        String defaultUserPassword = System.getenv("DEFAULT_USER_PASSWORD");
-        if (StringUtils.isEmpty(configuredApiToken) || StringUtils.isEmpty(defaultUserPassword)){
+        if (StringUtils.isEmpty(configuredApiToken)){
             resp.setStatus(500);
             resp.getWriter().print("Missing configurations. Please contact system admin");
             return;
@@ -97,17 +102,18 @@ public class CustomAuthenticateApi extends HttpServlet{
             }
 
             UserDetails customuserdetails = User.withUsername(username)
-                            .password(defaultUserPassword)
+                            .password(password)
                             .authorities(customuser.getRole().toString()).build();
 
             Authentication authentication =  new UsernamePasswordAuthenticationToken(customuserdetails, 
-                            defaultUserPassword, customuserdetails.getAuthorities());
+                            password, customuserdetails.getAuthorities());
             logger.debug("Logging in with {}", authentication.getPrincipal());
 
             SecurityContext sc = SecurityContextHolder.getContext();
             sc.setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
             resp.getWriter().print("User "+ username + " successfully logged in.");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
         }
         catch (Exception e){
             resp.setStatus(500);
