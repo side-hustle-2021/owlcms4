@@ -56,6 +56,7 @@ public class CustomAuthenticateApi extends HttpServlet{
         catch (Exception e){
             resp.setStatus(422);
             resp.getWriter().print("Invalid request body");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
             return;
         }
 
@@ -63,6 +64,7 @@ public class CustomAuthenticateApi extends HttpServlet{
                 || StringUtils.isEmpty(authorizationToken)){
             resp.setStatus(422);
             resp.getWriter().print("Username, password or authorization token cannot be empty");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
             return;
         }
 
@@ -70,12 +72,14 @@ public class CustomAuthenticateApi extends HttpServlet{
         if (StringUtils.isEmpty(configuredApiToken)){
             resp.setStatus(500);
             resp.getWriter().print("Missing configurations. Please contact system admin");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
             return;
         }
 
         if (!authorizationToken.equals(configuredApiToken)){
             resp.setStatus(417);
             resp.getWriter().print("Authorization Failed");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
             return;
         }
 
@@ -84,6 +88,7 @@ public class CustomAuthenticateApi extends HttpServlet{
         if (customuser == null){
             resp.setStatus(417);
             resp.getWriter().print("User not found");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
             return;
         }
         
@@ -118,6 +123,7 @@ public class CustomAuthenticateApi extends HttpServlet{
         catch (Exception e){
             resp.setStatus(500);
             resp.getWriter().print("Unable to authenticate user. Please contact system admin.");
+            resp.setHeader("Set-Cookie", resp.getHeader("Set-Cookie") + "; SameSite=None; Secure; ");
             return;
         }
     }
