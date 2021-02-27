@@ -26,6 +26,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ import app.owlcms.data.category.AgeDivision;
 import app.owlcms.data.category.Category;
 import app.owlcms.data.category.RobiCategories;
 import app.owlcms.data.competition.Competition;
+import app.owlcms.data.customlogin.CustomUser;
 import app.owlcms.data.group.Group;
 import app.owlcms.init.OwlcmsSession;
 import app.owlcms.utils.LoggerUtils;
@@ -294,6 +296,29 @@ public class Athlete {
 
     private String membership = "";
 
+    private String username = "";
+
+    @OneToOne
+    private CustomUser registeredUser = null;
+    
+    public CustomUser getRegisteredUser(){
+        return registeredUser;
+    }
+
+    public void setRegisteredUser(CustomUser registeredUser){
+        this.registeredUser = registeredUser;
+    }
+
+    public String getUsername(){
+        return registeredUser.getUsername();
+    }
+
+    public void setUsername(){
+        this.username = this.registeredUser.getUsername();
+    }
+
+    // private CustomUser registeredUser = null;
+
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH }, optional = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_group", nullable = true)
@@ -399,6 +424,8 @@ public class Athlete {
     private boolean validation = true;
     @Transient
     DecimalFormat df = null;
+    
+    
 
     /**
      * body weight inferred from category, used until real bodyweight is known.
@@ -3387,6 +3414,14 @@ public class Athlete {
     public void setYearOfBirth(Integer birthYear) {
         setFullBirthDate(birthYear);
     }
+
+    // public CustomUser getRegisteredUser(){
+    //     return registeredUser;
+    // }
+
+    // public void setRegisteredUser(CustomUser registeredUser){
+    //     this.registeredUser = registeredUser;
+    // }
 
     /**
      * Successful lift.

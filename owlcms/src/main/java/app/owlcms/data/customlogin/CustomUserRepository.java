@@ -36,6 +36,15 @@ public class CustomUserRepository {
         return JPAService.runInTransaction(em -> em.createQuery("select c from CustomUser c").getResultList());
     }
 
+    @SuppressWarnings("unchecked")
+    public static List<CustomUser> findAllAtheletes() {
+        return JPAService.runInTransaction(em -> 
+            em.createQuery("select c from CustomUser c where c.role=:role")
+            .setParameter("role", CustomRole.ATHLETE)
+            .getResultList()
+        );
+    }
+
     /**
      * Gets CustomUser by id.
      *

@@ -1,9 +1,14 @@
 package app.owlcms.data.customlogin;
 
 import app.owlcms.data.AbstractEntity;
+import app.owlcms.data.athlete.Athlete;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,9 @@ public class CustomUser extends AbstractEntity {
     private boolean active;
 
     private static CustomUser customuser;
+
+    @OneToOne(mappedBy = "customuser", fetch = FetchType.EAGER)
+    private Athlete athlete;
 
     @Autowired
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

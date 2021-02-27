@@ -19,7 +19,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 @SuppressWarnings("serial")
 public class CustomLogoutApi extends HttpServlet {
 
-    Logger logger = (Logger) LoggerFactory.getLogger(CustomRegisterApi.class);
+    Logger logger = (Logger) LoggerFactory.getLogger(CustomLogoutApi.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
