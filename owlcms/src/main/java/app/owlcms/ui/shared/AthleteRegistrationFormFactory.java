@@ -49,6 +49,7 @@ import app.owlcms.data.athlete.Gender;
 import app.owlcms.data.category.Category;
 import app.owlcms.data.category.CategoryRepository;
 import app.owlcms.data.competition.Competition;
+import app.owlcms.data.customlogin.CustomUser;
 import app.owlcms.displays.athletecard.AthleteCard;
 import app.owlcms.i18n.Translator;
 import app.owlcms.init.OwlcmsSession;
@@ -282,7 +283,11 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
             bindingBuilder.withValidator(v2);
             bindingBuilder.withConverter(new StringToIntegerConverter(Translator.translate("InvalidIntegerValue")));
             bindingBuilder.bind(property);
-        } else {
+        }  else if ("registeredUser".equals(property)) {
+            validateRegisteredUser(bindingBuilder);
+            bindingBuilder.bind(property);
+        }
+        else {
             super.bindField(field, property, propertyType);
         }
     }
@@ -312,6 +317,31 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
 //        }, Translator.translate("BodyWeight_no_match_category"));
         bindingBuilder.withValidator(v1);
 //        bindingBuilder.withValidator(v2);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected void validateRegisteredUser(Binder.BindingBuilder bindingBuilder){
+        Validator<CustomUser> v1 = Validator.from((customuser) -> {
+            try {
+                if (customuser == null) {
+                    return true;
+                }
+
+                logger.debug("validating username: {}", customuser.getUsername());
+                Athlete athlete = AthleteRepository.getAthleteByUsername(customuser);
+                if (athlete != null ){
+                    logger.debug("Athlete already exists with the given user: {} | Athlete", 
+                            customuser.getUsername(), athlete.getFirstName());
+                    return false;
+                }
+
+                return true;
+            } catch (Exception e) {
+                logger.error(LoggerUtils.stackTrace(e));
+            }
+            return true;
+        }, "Athlete already exists with the selected username. Please select another username");
+        bindingBuilder.withValidator(v1);
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

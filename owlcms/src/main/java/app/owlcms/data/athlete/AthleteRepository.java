@@ -19,6 +19,7 @@ import app.owlcms.data.category.AgeDivision;
 import app.owlcms.data.category.Category;
 import app.owlcms.data.category.CategoryRepository;
 import app.owlcms.data.competition.Competition;
+import app.owlcms.data.customlogin.CustomUser;
 import app.owlcms.data.group.Group;
 import app.owlcms.data.jpa.JPAService;
 import ch.qos.logback.classic.Level;
@@ -148,6 +149,14 @@ public class AthleteRepository {
         return JPAService.runInTransaction(em -> {
             return getById(id, em);
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Athlete getAthleteByUsername(CustomUser customuser) {
+        return (Athlete) JPAService.runInTransaction(em -> 
+            em.createQuery("select a from Athlete a where a.registeredUser=:customuser")
+            .setParameter("customuser", customuser)
+            .getResultList().stream().findFirst().orElse(null));
     }
 
     /**

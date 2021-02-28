@@ -310,6 +310,9 @@ public class Athlete {
     }
 
     public String getUsername(){
+        if(registeredUser == null){
+            return "";
+        }
         return registeredUser.getUsername();
     }
 
