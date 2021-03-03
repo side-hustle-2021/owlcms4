@@ -327,6 +327,11 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
                     return true;
                 }
 
+                CustomUser existingCustomUser = this.editedAthlete.getRegisteredUser();
+                if (existingCustomUser.getUsername().equals(customuser.getUsername())){
+                    return true;
+                }
+
                 logger.debug("validating username: {}", customuser.getUsername());
                 Athlete athlete = AthleteRepository.getAthleteByUsername(customuser);
                 if (athlete != null ){
