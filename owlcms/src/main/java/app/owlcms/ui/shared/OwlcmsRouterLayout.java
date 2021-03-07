@@ -216,6 +216,9 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
         .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
             clickEvent -> UI.getCurrent().getPage()
                     .executeJs("window.open('/displays','_self')")))
+        .add(new LeftClickableItem("Athlete Card", new Icon("hardware:desktop-windows"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/athletecard','_self')")))
         .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
             clickEvent -> UI.getCurrent().getPage()
                     .executeJs("window.open('/logout','_self')")));

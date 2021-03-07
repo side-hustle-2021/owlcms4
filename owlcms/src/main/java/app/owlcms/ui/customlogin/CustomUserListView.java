@@ -102,7 +102,16 @@ public class CustomUserListView extends VerticalLayout implements CrudListener<C
             Notification.show("Cannot delete the 'admin' user.");
             return;
         }
-        CustomUserRepository.delete(customuser);
+        try {
+            CustomUserRepository.delete(customuser);
+        }
+        catch (Exception e){
+            Notification.show("Unable to delete username: " + customuser.getUsername());
+            Notification.show("Please make sure the user is not mapped to an athlete.");
+            Notification.show("If issue persists please contact system admin.");
+            return;
+        }
+        
         crudGrid.refreshGrid();
         Notification.show("Deleted username: " + customuser.getUsername());
     }
