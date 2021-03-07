@@ -159,6 +159,14 @@ public class AthleteRepository {
             .getResultList().stream().findFirst().orElse(null));
     }
 
+    @SuppressWarnings("unchecked")
+    public static List<Athlete> getAthleteListByUser(CustomUser customuser) {
+        return JPAService.runInTransaction(em -> 
+            em.createQuery("select a from Athlete a where a.registeredUser=:customuser")
+            .setParameter("customuser", customuser)
+            .getResultList());
+    }
+
     /**
      * Find filtered.
      *

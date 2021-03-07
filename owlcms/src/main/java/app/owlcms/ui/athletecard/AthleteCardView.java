@@ -1,143 +1,118 @@
 package app.owlcms.ui.athletecard;
 
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 import ch.qos.logback.classic.Logger;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.vaadin.crudui.crud.FindAllCrudOperationListener;
 
 import com.vaadin.flow.router.HasDynamicTitle;
-import com.vaadin.flow.router.Location;
 
-import java.util.Collections;
+import java.util.Collection;
 
-import com.google.common.eventbus.Subscribe;
-import com.vaadin.flow.component.UI;
+import com.google.common.collect.ImmutableList;
 import com.vaadin.flow.component.grid.Grid;
 
 import app.owlcms.ui.shared.OwlcmsRouterLayout;
-import app.owlcms.uievents.UIEvent;
 import app.owlcms.utils.LoggerUtils;
 import app.owlcms.ui.crudui.OwlcmsCrudFormFactory;
-import app.owlcms.ui.crudui.OwlcmsCrudGrid;
 import app.owlcms.ui.crudui.OwlcmsGridLayout;
 import app.owlcms.ui.lifting.AthleteCardFormFactory;
-import app.owlcms.ui.lifting.UIEventProcessor;
-import app.owlcms.ui.shared.AthleteCrudGrid;
 import app.owlcms.ui.shared.AthleteGridContent;
-import app.owlcms.ui.shared.BaseNavigationContent;
-import app.owlcms.ui.shared.IAthleteEditing;
-import app.owlcms.components.NavigationPage;
 import app.owlcms.data.athlete.Athlete;
 import app.owlcms.data.athlete.AthleteRepository;
 import app.owlcms.data.customlogin.CustomUser;
 import app.owlcms.data.customlogin.CustomUserRepository;
+import app.owlcms.fieldofplay.FieldOfPlay;
+import app.owlcms.init.OwlcmsSession;
 
 @Route(value = "athletecard", layout = OwlcmsRouterLayout.class)
 @SuppressWarnings("serial")
-public class AthleteCardView extends BaseNavigationContent implements NavigationPage, HasDynamicTitle, IAthleteEditing {
+public class AthleteCardView extends AthleteGridContent implements HasDynamicTitle {
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(AthleteCardView.class);
     protected OwlcmsGridLayout owlcmsGridLayout;
-    protected AthleteCrudGrid crudGrid;
+    protected AthleteCrudDedicatedGrid crudGrid;
+    protected CustomUser customuser;
+    protected Athlete athlete;
+    protected String username;
 
     public AthleteCardView() {
+        super();
+        setTopBarTitle("Athlete Card");
+
         addClassName("athlete-card-view");
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+        
+        setupAthleteCrudGrid();
 
+        if (this.athlete == null){
+            add (new H2("No Athlete found with username: " + username));
+        }
+        else {
+            this.crudGrid.showAthleteCard(athlete);
+        }
+    }
+
+    protected void setupAthleteCrudGrid(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        String username = "";
         if (principal instanceof UserDetails) {
-          username = ((UserDetails)principal).getUsername();
+          this.username = ((UserDetails)principal).getUsername();
         } else {
-          username = principal.toString();
+          this.username = principal.toString();
         }
 
         owlcmsGridLayout = new OwlcmsGridLayout(Athlete.class);
-        IAthleteEditing origin = null;
-        // AthleteGridContent athleteGridContent = new AthleteGridContent();
         OwlcmsCrudFormFactory<Athlete> owlcmsCrudFormFactory = new AthleteCardFormFactory(Athlete.class, this);
         Grid<Athlete> grid = new Grid<>(Athlete.class, false);
 
-        crudGrid = new AthleteCrudGrid(Athlete.class, owlcmsGridLayout, owlcmsCrudFormFactory, grid);
+        this.crudGrid = new AthleteCrudDedicatedGrid(Athlete.class, owlcmsGridLayout, owlcmsCrudFormFactory, grid);
 
-        CustomUser customuser = CustomUserRepository.getByUsername(username);
-        Athlete athlete = AthleteRepository.getAthleteByUsername(customuser);
+        this.customuser = CustomUserRepository.getByUsername(this.username);
+        this.athlete = AthleteRepository.getAthleteByUsername(this.customuser);
+    }
 
-        if (athlete == null){
-            add (
-                new H2("No Athlete found with username: " + username)
-            );
+    @Override
+    public Collection<Athlete> findAll() {
+        FieldOfPlay fop = OwlcmsSession.getFop();
+        if (fop != null) {
+            logger.trace("findAll {} {} {}", fop.getName(), fop.getGroup() == null ? null : fop.getGroup().getName(),
+                    LoggerUtils.whereFrom());
+            return AthleteRepository.getAthleteListByUser(this.customuser);
+        } else {
+            // no field of play, no group, empty list
+            logger.debug("findAll fop==null");
+            return ImmutableList.of();
         }
-        else {
-            crudGrid.showAthleteCard(athlete);
-        }
     }
 
-    @Subscribe
-    public void slaveUpdateGrid(UIEvent.LiftingOrderUpdated e) {
-        if (crudGrid == null) {
-            return;
-        }
-        logger.debug("{} {}", e.getOrigin(), LoggerUtils.whereFrom());
-        UIEventProcessor.uiAccess(crudGrid, uiEventBus, e, () -> {
-            crudGrid.refreshGrid();
-        });
-    }
-
-    /**
-     * @see app.owlcms.ui.shared.IAthleteEditing#closeDialog()
-     */
-    @Override
-    public void closeDialog() {
-        owlcmsGridLayout.hideForm();
-        crudGrid.getGrid().asSingleSelect().clear();
-    }
-
-    @Override
-    public OwlcmsCrudGrid<?> getEditingGrid() {
-        return crudGrid;
-    }
-
-    @Override
-    public Location getLocation() {
-        return this.location;
-    }
-
-    @Override
-    public UI getLocationUI() {
-        return this.locationUI;
-    }
-
-    /**
-     * @see com.vaadin.flow.router.HasDynamicTitle#getPageTitle()
-     */
     @Override
     public String getPageTitle() {
         return "Athlete Card";
     }
 
     /**
-     * @see app.owlcms.ui.shared.BaseNavigationContent#getTitle()
+     * @see app.owlcms.ui.shared.AthleteGridContent#announcerButtons(com.vaadin.flow.component.orderedlayout.HorizontalLayout)
      */
     @Override
-    protected String getTitle() {
-        return "Athlete Card";
+    protected HorizontalLayout announcerButtons(FlexLayout announcerBar) {
+        HorizontalLayout buttons = new HorizontalLayout();
+        return buttons;
     }
 
+    /**
+     * @see app.owlcms.ui.shared.AthleteGridContent#createTopBar()
+     */
     @Override
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    @Override
-    public void setLocationUI(UI locationUI) {
-        this.locationUI = locationUI;
+    protected void createTopBar() {
+        super.createTopBar();
+        // this hides the back arrow
+        getAppLayout().setMenuVisible(false);
     }
 }

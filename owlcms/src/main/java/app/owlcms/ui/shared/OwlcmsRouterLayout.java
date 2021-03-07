@@ -157,7 +157,7 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
             leftmenulayout = getAdminLayoutMenu();
         }
         else if(userrole.equals("PUBLIC")){
-            leftmenulayout = getAthleteLayoutMenu();
+            leftmenulayout = getPublicLayoutMenu();
         }
         else if(userrole.equals("ATHLETE")){
             leftmenulayout = getAthleteLayoutMenu();
@@ -216,7 +216,7 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
         .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
             clickEvent -> UI.getCurrent().getPage()
                     .executeJs("window.open('/displays','_self')")))
-        .add(new LeftClickableItem("Athlete Card", new Icon("hardware:desktop-windows"),
+        .add(new LeftClickableItem("Athlete Card", new Icon("hardware:keyboard"),
             clickEvent -> UI.getCurrent().getPage()
                     .executeJs("window.open('/athletecard','_self')")))
         .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
@@ -225,6 +225,16 @@ public class OwlcmsRouterLayout extends AppLayoutRouterLayout implements PageCon
     }
 
     protected LeftAppMenuBuilder getRefereeLayoutMenu(){
+        return LeftAppMenuBuilder.get()
+        .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/displays','_self')")))
+        .add(new LeftClickableItem("Logout", new Icon("icons:exit-to-app"),
+            clickEvent -> UI.getCurrent().getPage()
+                    .executeJs("window.open('/logout','_self')")));
+    }
+
+    protected LeftAppMenuBuilder getPublicLayoutMenu(){
         return LeftAppMenuBuilder.get()
         .add(new LeftClickableItem("Start Displays", new Icon("hardware:desktop-windows"),
             clickEvent -> UI.getCurrent().getPage()

@@ -73,8 +73,4 @@ public class AthleteCrudGrid extends OwlcmsCrudGrid<Athlete> {
         // show both an update and a delete button.
         this.showForm(CrudOperation.UPDATE, domainObject, false, savedMessage, null);
     }
-
-    public void showAthleteCard(Athlete athlete){
-        this.showForm(CrudOperation.UPDATE, athlete, false, "Item saved", null);
-    }
 }
