@@ -111,8 +111,6 @@ public class AthleteCardView extends AthleteGridContent implements HasDynamicTit
      */
     @Override
     protected void createTopBar() {
-        super.createTopBar();
-        // this hides the back arrow
-        getAppLayout().setMenuVisible(false);
+       
     }
 }
