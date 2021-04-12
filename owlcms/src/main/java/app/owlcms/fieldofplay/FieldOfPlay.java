@@ -367,6 +367,10 @@ public class FieldOfPlay {
         return uiEventBus;
     }
 
+    public int getCurWeight(){
+        return curWeight;
+    }
+
     /**
      * Handle field of play events.
      *

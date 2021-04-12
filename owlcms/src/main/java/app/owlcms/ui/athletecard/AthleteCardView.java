@@ -1,6 +1,5 @@
 package app.owlcms.ui.athletecard;
 
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
@@ -21,8 +20,6 @@ import app.owlcms.ui.shared.OwlcmsRouterLayout;
 import app.owlcms.utils.LoggerUtils;
 import app.owlcms.ui.crudui.OwlcmsCrudFormFactory;
 import app.owlcms.ui.crudui.OwlcmsGridLayout;
-import app.owlcms.ui.lifting.AthleteCardFormFactory;
-import app.owlcms.ui.shared.AthleteGridContent;
 import app.owlcms.data.athlete.Athlete;
 import app.owlcms.data.athlete.AthleteRepository;
 import app.owlcms.data.customlogin.CustomUser;
@@ -32,7 +29,7 @@ import app.owlcms.init.OwlcmsSession;
 
 @Route(value = "athletecard", layout = OwlcmsRouterLayout.class)
 @SuppressWarnings("serial")
-public class AthleteCardView extends AthleteGridContent implements HasDynamicTitle {
+public class AthleteCardView extends AthleteCardGridContent implements HasDynamicTitle {
 
     private final static Logger logger = (Logger) LoggerFactory.getLogger(AthleteCardView.class);
     protected OwlcmsGridLayout owlcmsGridLayout;
@@ -50,13 +47,6 @@ public class AthleteCardView extends AthleteGridContent implements HasDynamicTit
         setAlignItems(Alignment.CENTER);
         
         setupAthleteCrudGrid();
-
-        if (this.athlete == null){
-            add (new H2("No Athlete found with username: " + username));
-        }
-        else {
-            this.crudGrid.showAthleteCard(athlete);
-        }
     }
 
     protected void setupAthleteCrudGrid(){
@@ -69,7 +59,7 @@ public class AthleteCardView extends AthleteGridContent implements HasDynamicTit
         }
 
         owlcmsGridLayout = new OwlcmsGridLayout(Athlete.class);
-        OwlcmsCrudFormFactory<Athlete> owlcmsCrudFormFactory = new AthleteCardFormFactory(Athlete.class, this);
+        OwlcmsCrudFormFactory<Athlete> owlcmsCrudFormFactory = new AthleteCardDedicatedFormFactory(Athlete.class, this);
         Grid<Athlete> grid = new Grid<>(Athlete.class, false);
 
         this.crudGrid = new AthleteCrudDedicatedGrid(Athlete.class, owlcmsGridLayout, owlcmsCrudFormFactory, grid);
