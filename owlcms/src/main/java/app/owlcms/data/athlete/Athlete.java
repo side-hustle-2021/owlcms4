@@ -94,6 +94,8 @@ public class Athlete {
             dest.setStartNumber(src.getStartNumber());
             dest.setQualifyingTotal(src.getQualifyingTotal());
 
+            dest.setRegisteredUser(src.getRegisteredUser());
+
             dest.setSnatch1Declaration(src.getSnatch1Declaration());
             dest.setSnatch1Change1(src.getSnatch1Change1());
             dest.setSnatch1Change2(src.getSnatch1Change2());

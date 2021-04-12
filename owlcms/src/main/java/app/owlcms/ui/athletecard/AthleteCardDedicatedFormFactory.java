@@ -408,7 +408,7 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField snatch1Declaration = createPositiveWeightField(DECLARATION, SNATCH1);
         binder.forField(snatch1Declaration)
                 .withValidator(
-                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v)))
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch1Declaration(v)))
                 .withValidationStatusHandler(status -> {
@@ -417,6 +417,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField snatch1Change1 = createPositiveWeightField(CHANGE1, SNATCH1);
         binder.forField(snatch1Change1)
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch1Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch1Change1, Athlete::setSnatch1Change1);
@@ -424,6 +426,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField snatch1Change2 = createPositiveWeightField(CHANGE2, SNATCH1);
         binder.forField(snatch1Change2)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch1Change2(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch1Change2, Athlete::setSnatch1Change2);
@@ -437,6 +441,7 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
                 .withValidationStatusHandler(status -> setActualLiftStyle(status))
                 .bind(Athlete::getSnatch1ActualLift, Athlete::setSnatch1ActualLift);
         atRowAndColumn(gridLayout, snatch1ActualLift, ACTUAL, SNATCH1);
+        snatch1ActualLift.setReadOnly(true);
 
         snatch2AutomaticProgression = new TextField();
         snatch2AutomaticProgression.setReadOnly(true);
@@ -448,6 +453,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField snatch2Declaration = createPositiveWeightField(DECLARATION, SNATCH2);
         binder.forField(snatch2Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch2Declaration(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch2Declaration, Athlete::setSnatch2Declaration);
@@ -455,6 +462,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField snatch2Change1 = createPositiveWeightField(CHANGE1, SNATCH2);
         binder.forField(snatch2Change1)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch2Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch2Change1, Athlete::setSnatch2Change1);
@@ -462,6 +471,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField snatch2Change2 = createPositiveWeightField(CHANGE2, SNATCH2);
         binder.forField(snatch2Change2)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch2Change2(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch2Change2, Athlete::setSnatch2Change2);
@@ -475,6 +486,7 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
                 .withValidationStatusHandler(status -> setActualLiftStyle(status))
                 .bind(Athlete::getSnatch2ActualLift, Athlete::setSnatch2ActualLift);
         atRowAndColumn(gridLayout, snatch2ActualLift, ACTUAL, SNATCH2);
+        snatch2ActualLift.setReadOnly(true);
 
         snatch3AutomaticProgression = new TextField();
         snatch3AutomaticProgression.setReadOnly(true);
@@ -486,6 +498,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField snatch3Declaration = createPositiveWeightField(DECLARATION, SNATCH3);
         binder.forField(snatch3Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3Declaration(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch3Declaration, Athlete::setSnatch3Declaration);
@@ -493,6 +507,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField snatch3Change1 = createPositiveWeightField(CHANGE1, SNATCH3);
         binder.forField(snatch3Change1)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch3Change1, Athlete::setSnatch3Change1);
@@ -500,6 +516,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField snatch3Change2 = createPositiveWeightField(CHANGE2, SNATCH3);
         binder.forField(snatch3Change2)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3Change2(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch3Change2, Athlete::setSnatch3Change2);
@@ -508,13 +526,18 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         snatch3ActualLift = createActualWeightField(ACTUAL, SNATCH3);
         binder.forField(snatch3ActualLift)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3ActualLift(v)))
                 .withValidationStatusHandler(status -> setActualLiftStyle(status))
                 .bind(Athlete::getSnatch3ActualLift, Athlete::setSnatch3ActualLift);
         atRowAndColumn(gridLayout, snatch3ActualLift, ACTUAL, SNATCH3);
+        snatch3ActualLift.setReadOnly(true);
 
         TextField cj1Declaration = createPositiveWeightField(DECLARATION, CJ1);
         binder.forField(cj1Declaration)
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk1Declaration(v)))
                 .withValidationStatusHandler(status -> {
@@ -524,6 +547,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField cj1Change1 = createPositiveWeightField(CHANGE1, CJ1);
         binder.forField(cj1Change1)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk1Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getCleanJerk1Change1, Athlete::setCleanJerk1Change1);
@@ -531,6 +556,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField cj1Change2 = createPositiveWeightField(CHANGE2, CJ1);
         binder.forField(cj1Change2)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk1Change2(v)))
                 .withValidationStatusHandler(status -> {
@@ -545,6 +572,7 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
                 .withValidationStatusHandler(status -> setActualLiftStyle(status))
                 .bind(Athlete::getCleanJerk1ActualLift, Athlete::setCleanJerk1ActualLift);
         atRowAndColumn(gridLayout, cj1ActualLift, ACTUAL, CJ1);
+        cj1ActualLift.setReadOnly(true);
 
         cj2AutomaticProgression = new TextField();
         cj2AutomaticProgression.setReadOnly(true);
@@ -556,6 +584,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField cj2Declaration = createPositiveWeightField(DECLARATION, CJ2);
         binder.forField(cj2Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk2Declaration(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getCleanJerk2Declaration, Athlete::setCleanJerk2Declaration);
@@ -564,6 +594,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField cj2Change1 = createPositiveWeightField(CHANGE1, CJ2);
         binder.forField(cj2Change1)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk2Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getCleanJerk2Change1, Athlete::setCleanJerk2Change1);
@@ -571,6 +603,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField cj2Change2 = createPositiveWeightField(CHANGE2, CJ2);
         binder.forField(cj2Change2)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk2Change2(v)))
                 .withValidationStatusHandler(status -> {
@@ -585,6 +619,7 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
                 .withValidationStatusHandler(status -> setActualLiftStyle(status))
                 .bind(Athlete::getCleanJerk2ActualLift, Athlete::setCleanJerk2ActualLift);
         atRowAndColumn(gridLayout, cj2ActualLift, ACTUAL, CJ2);
+        cj2ActualLift.setReadOnly(true);
 
         cj3AutomaticProgression = new TextField();
         cj3AutomaticProgression.setReadOnly(true);
@@ -596,6 +631,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField cj3Declaration = createPositiveWeightField(DECLARATION, CJ3);
         binder.forField(cj3Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk3Declaration(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getCleanJerk3Declaration, Athlete::setCleanJerk3Declaration);
@@ -604,6 +641,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
         TextField cj3Change1 = createPositiveWeightField(CHANGE1, CJ3);
         binder.forField(cj3Change1)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
+                .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk3Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getCleanJerk3Change1, Athlete::setCleanJerk3Change1);
@@ -611,6 +650,8 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
 
         TextField cj3Change2 = createPositiveWeightField(CHANGE2, CJ3);
         binder.forField(cj3Change2)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk3Change2(v)))
                 .withValidationStatusHandler(status -> {
@@ -624,6 +665,7 @@ public class AthleteCardDedicatedFormFactory extends OwlcmsCrudFormFactory<Athle
                 .withValidationStatusHandler(status -> setActualLiftStyle(status))
                 .bind(Athlete::getCleanJerk3ActualLift, Athlete::setCleanJerk3ActualLift);
         atRowAndColumn(gridLayout, cj3ActualLift, ACTUAL, CJ3);
+        cj3ActualLift.setReadOnly(true);
 
         if (Competition.getCurrent().isCustomScore()) {
             TextField custom = createPositiveWeightField(SCORE, CJ3);

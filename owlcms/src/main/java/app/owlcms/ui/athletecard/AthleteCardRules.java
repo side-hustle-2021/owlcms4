@@ -7,10 +7,15 @@ import app.owlcms.init.OwlcmsSession;
 
 public class AthleteCardRules {
 
-    public static boolean validateWobRule(String requestedWeight){
+    public static boolean validateWobRule(String requestedWeight, Athlete editingAthlete){
         OwlcmsSession.withFop((fop) -> {
+            Athlete curAthlete = fop.getCurAthlete();
             int curWeight = fop.getCurWeight();
-            if (Athlete.zeroIfInvalid(requestedWeight) < curWeight) {
+            if (
+                (Athlete.zeroIfInvalid(requestedWeight) < curWeight) && 
+                (!(editingAthlete.getUsername().equals(curAthlete.getUsername())
+                ))
+            ) {
                 RuleViolationException ruleWobViolated = null;
                 ruleWobViolated = RuleViolation.wobViolated(
                     requestedWeight, Integer.toString(curWeight)
