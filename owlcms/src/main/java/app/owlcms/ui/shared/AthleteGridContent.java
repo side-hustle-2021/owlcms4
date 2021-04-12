@@ -1043,7 +1043,7 @@ public abstract class AthleteGridContent extends VerticalLayout
     /**
      * @return the athleteEditingFormFactory
      */
-    private AthleteCardFormFactory getAthleteEditingFormFactory() {
+    public AthleteCardFormFactory getAthleteEditingFormFactory() {
         return athleteEditingFormFactory;
     }
 

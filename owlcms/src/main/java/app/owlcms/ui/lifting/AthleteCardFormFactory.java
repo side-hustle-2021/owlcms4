@@ -59,44 +59,44 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
 
     final private static Logger logger = (Logger) LoggerFactory.getLogger(AthleteCardFormFactory.class);
 
-    private static final int HEADER = 1;
-    private static final int AUTOMATIC = HEADER + 1;
-    private static final int DECLARATION = AUTOMATIC + 1;
-    private static final int CHANGE1 = DECLARATION + 1;
-    private static final int CHANGE2 = CHANGE1 + 1;
-    private static final int ACTUAL = CHANGE2 + 1;
-    private static final int SCORE = ACTUAL + 1;
+    protected static final int HEADER = 1;
+    protected static final int AUTOMATIC = HEADER + 1;
+    protected static final int DECLARATION = AUTOMATIC + 1;
+    protected static final int CHANGE1 = DECLARATION + 1;
+    protected static final int CHANGE2 = CHANGE1 + 1;
+    protected static final int ACTUAL = CHANGE2 + 1;
+    protected static final int SCORE = ACTUAL + 1;
 
-    private static final int LEFT = 1;
-    private static final int SNATCH1 = LEFT + 1;
-    private static final int SNATCH2 = SNATCH1 + 1;
-    private static final int SNATCH3 = SNATCH2 + 1;
-    private static final int CJ1 = SNATCH3 + 1;
-    private static final int CJ2 = CJ1 + 1;
-    private static final int CJ3 = CJ2 + 1;
-    private TextField cj2AutomaticProgression;
-    private TextField cj3AutomaticProgression;
-    private TextField cj1ActualLift;
-    private TextField cj2ActualLift;
-    private TextField cj3ActualLift;
+    protected static final int LEFT = 1;
+    protected static final int SNATCH1 = LEFT + 1;
+    protected static final int SNATCH2 = SNATCH1 + 1;
+    protected static final int SNATCH3 = SNATCH2 + 1;
+    protected static final int CJ1 = SNATCH3 + 1;
+    protected static final int CJ2 = CJ1 + 1;
+    protected static final int CJ3 = CJ2 + 1;
+    protected TextField cj2AutomaticProgression;
+    protected TextField cj3AutomaticProgression;
+    protected TextField cj1ActualLift;
+    protected TextField cj2ActualLift;
+    protected TextField cj3ActualLift;
 
-    private TextField snatch2AutomaticProgression;
-    private TextField snatch3AutomaticProgression;
-    private TextField snatch1ActualLift;
-    private TextField snatch2ActualLift;
-    private TextField snatch3ActualLift;
+    protected TextField snatch2AutomaticProgression;
+    protected TextField snatch3AutomaticProgression;
+    protected TextField snatch1ActualLift;
+    protected TextField snatch2ActualLift;
+    protected TextField snatch3ActualLift;
 
     /**
      * text field array to facilitate setting focus when form is opened
      */
     TextField[][] textfields = new TextField[SCORE][CJ3];
 
-    private Athlete editedAthlete;
-    private Athlete originalAthlete;
+    protected Athlete editedAthlete;
+    protected Athlete originalAthlete;
 
     private IAthleteEditing origin;
 
-    private GridLayout gridLayout;
+    protected GridLayout gridLayout;
 
     public AthleteCardFormFactory(Class<Athlete> domainType, IAthleteEditing origin) {
         super(domainType);
@@ -394,11 +394,11 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
         return originalAthlete;
     }
 
-    private void atRowAndColumn(GridLayout gridLayout, Component component, int row, int column) {
+    protected void atRowAndColumn(GridLayout gridLayout, Component component, int row, int column) {
         atRowAndColumn(gridLayout, component, row, column, RowAlign.CENTER, ColumnAlign.CENTER);
     }
 
-    private void atRowAndColumn(GridLayout gridLayout, Component component, int row, int column, RowAlign ra,
+    protected void atRowAndColumn(GridLayout gridLayout, Component component, int row, int column, RowAlign ra,
             ColumnAlign ca) {
         gridLayout.add(component);
         gridLayout.setRowAndColumn(component, new Int(row), new Int(column), new Int(row), new Int(column));
@@ -417,7 +417,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
      * @param operation
      * @param gridLayout
      */
-    private void bindGridFields(CrudOperation operation) {
+    protected void bindGridFields(CrudOperation operation) {
         binder = buildBinder(null, getEditedAthlete());
 
         TextField snatch1Declaration = createPositiveWeightField(DECLARATION, SNATCH1);
@@ -680,7 +680,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
         return value <= 0 ? Math.abs(value) : value + 1;
     }
 
-    private TextField createActualWeightField(int row, int col) {
+    protected TextField createActualWeightField(int row, int col) {
         TextField tf = new TextField();
         tf.setPattern("^[-]{0,1}\\d*$");
         tf.setPreventInvalidInput(true);
@@ -688,7 +688,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
         return tf;
     }
 
-    private TextField createPositiveWeightField(int row, int col) {
+    protected TextField createPositiveWeightField(int row, int col) {
         TextField tf = new TextField();
         tf.setPattern("^\\d*$");
         tf.setPreventInvalidInput(true);
@@ -708,7 +708,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
         origin.closeDialog();
     }
 
-    private Athlete getEditedAthlete() {
+    protected Athlete getEditedAthlete() {
         return editedAthlete;
     }
 
@@ -723,7 +723,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
         cj3AutomaticProgression.setReadOnly(true);
     }
 
-    private void setActualLiftStyle(BindingValidationStatus<?> status) throws NumberFormatException {
+    protected void setActualLiftStyle(BindingValidationStatus<?> status) throws NumberFormatException {
         TextField field = (TextField) status.getField();
         if (status.isError()) {
             field.getElement().getClassList().set("error", true);
@@ -753,7 +753,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
      * @param athlete
      * @return true always
      */
-    private boolean setAutomaticProgressions(Athlete athlete) {
+    protected boolean setAutomaticProgressions(Athlete athlete) {
         int value = Athlete.zeroIfInvalid(snatch1ActualLift.getValue());
         int autoVal = computeAutomaticProgression(value);
         snatch2AutomaticProgression.setValue(Integer.toString(autoVal));
@@ -775,7 +775,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
         this.editedAthlete = editedAthlete;
     }
 
-    private void setFocus(Athlete a) {
+    protected void setFocus(Athlete a) {
         int targetRow = ACTUAL + 1;
         int targetCol = CJ3 + 1;
 
