@@ -299,6 +299,12 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
             validateRegisteredUser(bindingBuilder);
             bindingBuilder.bind(property);
         }
+        else if ("lastName".equals(property) ||
+                 "firstName".equals(property) ||
+                 "group".equals(property)) {
+            cannotBeEmptyValidation(bindingBuilder);
+            bindingBuilder.bind(property);
+        }
         else {
             super.bindField(field, property, propertyType);
         }
