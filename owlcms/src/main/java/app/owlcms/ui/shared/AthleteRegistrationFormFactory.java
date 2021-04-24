@@ -253,7 +253,6 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
             validateCategory(bindingBuilder);
             bindingBuilder.bind(property);
         } else if ("gender".equals(property)) {
-            cannotBeEmptyValidation(bindingBuilder);
             validateGender(bindingBuilder);
 //            field.addValueChangeListener((e) -> {
 //                Gender gender = (Gender) e.getValue();
@@ -271,6 +270,9 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
                 return validateStartingTotals("snatch1Declaration", "cleanJerk1Declaration", "qualifyingTotal");
             });
             bindingBuilder.withValidator(v2);
+            field.addValueChangeListener((e) -> {
+                updateQualifyingTotalValue();
+            });
             bindingBuilder.bind(property);
         } else if (property.endsWith("cleanJerk1Declaration")) {
             cannotBeEmptyValidation(bindingBuilder);
@@ -279,8 +281,12 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
                 return validateStartingTotals("cleanJerk1Declaration", "snatch1Declaration", "qualifyingTotal");
             });
             bindingBuilder.withValidator(v2);
+            field.addValueChangeListener((e) -> {
+                updateQualifyingTotalValue();
+            });
             bindingBuilder.bind(property);
         } else if ("qualifyingTotal".equals(property)) {
+            cannotBeEmptyValidation(bindingBuilder);
             configure20kgWeightField(field);
             Validator<String> v2 = ValidationUtils.<String>checkUsingException((unused) -> {
                 return validateStartingTotals("qualifyingTotal", "snatch1Declaration", "cleanJerk1Declaration");
@@ -298,10 +304,30 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
         }
     }
 
+    protected void updateQualifyingTotalValue(){
+        Binding<Athlete, ?> qualifyingTotalBinding = binder.getBinding("qualifyingTotal").get();
+        TextField qualifyingTotalField = (TextField) qualifyingTotalBinding.getField();
+        
+        Binding<Athlete, ?> snatch1DeclarationBinding = binder.getBinding("snatch1Declaration").get();
+        TextField snatch1DeclarationField = (TextField) snatch1DeclarationBinding.getField();
+
+        Integer snatch1DeclarationValue = StringUtils.isEmpty(snatch1DeclarationField.getValue())
+                                        ? 0 : Integer.parseInt(snatch1DeclarationField.getValue());
+
+        Binding<Athlete, ?> cleanJerk1DeclarationBinding = binder.getBinding("cleanJerk1Declaration").get();
+        TextField cleanJerk1DeclarationField = (TextField) cleanJerk1DeclarationBinding.getField();
+
+        Integer cleanJerk1DeclarationValue = StringUtils.isEmpty(cleanJerk1DeclarationField.getValue())
+                                        ? 0 : Integer.parseInt(cleanJerk1DeclarationField.getValue());
+        
+        String qualifyingTotalValue = Integer.toString(snatch1DeclarationValue + cleanJerk1DeclarationValue);
+        qualifyingTotalField.setValue(qualifyingTotalValue);
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void cannotBeEmptyValidation(Binder.BindingBuilder bindingBuilder){
-        Validator<String> v1 = Validator.from((fieldValue) -> {
-            if (StringUtils.isEmpty(fieldValue)) {
+        Validator<?> v1 = Validator.from((fieldValue) -> {
+            if (fieldValue == null || StringUtils.isEmpty(fieldValue.toString())) {
                 return false;
             }
             else {
@@ -484,7 +510,7 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
         Validator<Gender> v2 = Validator.from((g) -> {
             try {
                 if (g == null) {
-                    return true;
+                    return false;
                 }
                 Binding<Athlete, ?> catBinding = binder.getBinding("category").get();
                 ComboBox<Category> categoryCombo = (ComboBox<Category>) catBinding.getField();
