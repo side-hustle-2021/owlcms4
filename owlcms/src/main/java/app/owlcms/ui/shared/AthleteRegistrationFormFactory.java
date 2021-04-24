@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.maven.shared.utils.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.vaadin.crudui.crud.CrudOperation;
 
@@ -225,6 +226,7 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
         Binder.BindingBuilder bindingBuilder = binder.forField(field);
 
         if ("bodyWeight".equals(property)) {
+            cannotBeEmptyValidation(bindingBuilder);
             validateBodyWeight(bindingBuilder, ((BodyWeightField) field).isRequired());
             bindingBuilder.bind(property);
         } else if ("fullBirthDate".equals(property)) {
@@ -235,6 +237,7 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
 //            });
             bindingBuilder.bind(property);
         } else if ("yearOfBirth".equals(property)) {
+            cannotBeEmptyValidation(bindingBuilder);
             validateYearOfBirth(bindingBuilder);
             ((TextField) field).setValueChangeMode(ValueChangeMode.EAGER);
 //            field.addValueChangeListener((event) -> {
@@ -250,6 +253,7 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
             validateCategory(bindingBuilder);
             bindingBuilder.bind(property);
         } else if ("gender".equals(property)) {
+            cannotBeEmptyValidation(bindingBuilder);
             validateGender(bindingBuilder);
 //            field.addValueChangeListener((e) -> {
 //                Gender gender = (Gender) e.getValue();
@@ -261,6 +265,7 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
 //            });
             bindingBuilder.bind(property);
         } else if (property.endsWith("snatch1Declaration")) {
+            cannotBeEmptyValidation(bindingBuilder);
             configure20kgWeightField(field);
             Validator<String> v2 = ValidationUtils.<String>checkUsingException((unused) -> {
                 return validateStartingTotals("snatch1Declaration", "cleanJerk1Declaration", "qualifyingTotal");
@@ -268,6 +273,7 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
             bindingBuilder.withValidator(v2);
             bindingBuilder.bind(property);
         } else if (property.endsWith("cleanJerk1Declaration")) {
+            cannotBeEmptyValidation(bindingBuilder);
             configure20kgWeightField(field);
             Validator<String> v2 = ValidationUtils.<String>checkUsingException((unused) -> {
                 return validateStartingTotals("cleanJerk1Declaration", "snatch1Declaration", "qualifyingTotal");
@@ -290,6 +296,19 @@ public final class AthleteRegistrationFormFactory extends OwlcmsCrudFormFactory<
         else {
             super.bindField(field, property, propertyType);
         }
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected void cannotBeEmptyValidation(Binder.BindingBuilder bindingBuilder){
+        Validator<String> v1 = Validator.from((fieldValue) -> {
+            if (StringUtils.isEmpty(fieldValue)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }, "This field cannot be empty. Please enter a valid value.");
+        bindingBuilder.withValidator(v1);
     }
 
     /**

@@ -89,7 +89,7 @@ public class AthleteCardFormFactory extends OwlcmsCrudFormFactory<Athlete> imple
     /**
      * text field array to facilitate setting focus when form is opened
      */
-    TextField[][] textfields = new TextField[SCORE][CJ3];
+    protected TextField[][] textfields = new TextField[SCORE][CJ3];
 
     protected Athlete editedAthlete;
     protected Athlete originalAthlete;

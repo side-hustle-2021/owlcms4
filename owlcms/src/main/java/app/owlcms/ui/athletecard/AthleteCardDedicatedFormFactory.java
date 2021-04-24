@@ -19,6 +19,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.converter.StringToDoubleConverter;
+import com.vaadin.flow.data.value.ValueChangeMode;
 
 import app.owlcms.components.fields.ValidationUtils;
 import app.owlcms.data.athlete.Athlete;
@@ -318,7 +319,57 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         // routines in the
         // Athlete class don't work
         binder.setBean(getEditedAthlete());
+        setAllReadOnly();
         setFocus(getEditedAthlete());
+    }
+
+    protected void setAllReadOnly(){
+        for (int row = 0; row < textfields.length; row++){
+            for (int col = 0; col < textfields[row].length; col++) {
+                if (textfields[row][col] == null){
+                    continue;
+                }
+                textfields[row][col].setReadOnly(true);
+            }
+        }
+    }
+
+    @Override
+    protected void setFocus(Athlete a) {
+        int targetRow = ACTUAL + 1;
+        int targetCol = CJ3 + 1;
+
+        // figure out whether we are searching for snatch or CJ
+        int rightCol;
+        int leftCol;
+        if (a.getAttemptsDone() >= 3) {
+            rightCol = CJ3;
+            leftCol = CJ1;
+        } else {
+            rightCol = SNATCH3;
+            leftCol = SNATCH1;
+        }
+
+        // remember location of last empty cell, going backwards
+        search: for (int col = rightCol; col >= leftCol; col--) {
+            for (int row = ACTUAL-1; row > AUTOMATIC; row--) {
+                boolean empty = textfields[row - 1][col - 1].isEmpty();
+                if (empty) {
+                    targetRow = row - 1;
+                    targetCol = col - 1;
+                } else {
+                    // don't go back past first non-empty (leave holes)
+                    break search;
+                }
+            }
+        }
+
+        if (targetCol <= CJ3 && targetRow <= ACTUAL) {
+            // a suitable empty cell was found, set focus
+            textfields[targetRow][targetCol].setAutofocus(true);
+            textfields[targetRow][targetCol].setAutoselect(true);
+            textfields[targetRow][targetCol].setReadOnly(false);
+        }
     }
 
     /**
