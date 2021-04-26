@@ -335,6 +335,7 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
     @Override
     protected void setFocus(Athlete a) {
+        boolean breakSearch = false;
         int targetRow = ACTUAL + 1;
         int targetCol = CJ3 + 1;
 
@@ -349,16 +350,20 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
             leftCol = SNATCH1;
         }
 
-        // remember location of last empty cell, going backwards
-        search: for (int col = rightCol; col >= leftCol; col--) {
-            for (int row = ACTUAL-1; row > AUTOMATIC; row--) {
+        for (int col=leftCol; col<=rightCol && !breakSearch; col++){
+            if (!textfields[ACTUAL-1][col - 1].isEmpty()){
+                continue;
+            }
+            for (int row=AUTOMATIC+1; row<ACTUAL && !breakSearch; row++) {
                 boolean empty = textfields[row - 1][col - 1].isEmpty();
-                if (empty) {
+                if (col > leftCol && textfields[ACTUAL-1][col - 2].isEmpty()){
+                    breakSearch = true;
+                    break;
+                }
+                else if(empty){
+                    breakSearch = true;
                     targetRow = row - 1;
                     targetCol = col - 1;
-                } else {
-                    // don't go back past first non-empty (leave holes)
-                    break search;
                 }
             }
         }
