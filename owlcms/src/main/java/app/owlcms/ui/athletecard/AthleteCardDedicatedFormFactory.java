@@ -91,6 +91,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         TextField snatch2Declaration = createPositiveWeightField(DECLARATION, SNATCH2);
         binder.forField(snatch2Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(2, getEditedAthlete())))
+                .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch2Declaration(v)))
@@ -136,6 +138,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         TextField snatch3Declaration = createPositiveWeightField(DECLARATION, SNATCH3);
         binder.forField(snatch3Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(3, getEditedAthlete())))
+                .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3Declaration(v)))
@@ -174,6 +178,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField cj1Declaration = createPositiveWeightField(DECLARATION, CJ1);
         binder.forField(cj1Declaration)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(4, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -222,6 +228,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         TextField cj2Declaration = createPositiveWeightField(DECLARATION, CJ2);
         binder.forField(cj2Declaration)
                 .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(5, getEditedAthlete())))
+                .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk2Declaration(v)))
@@ -268,6 +276,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField cj3Declaration = createPositiveWeightField(DECLARATION, CJ3);
         binder.forField(cj3Declaration)
+                .withValidator(
+                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(6, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -356,11 +366,7 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
             }
             for (int row=AUTOMATIC+1; row<ACTUAL && !breakSearch; row++) {
                 boolean empty = textfields[row - 1][col - 1].isEmpty();
-                if (col > leftCol && textfields[ACTUAL-1][col - 2].isEmpty()){
-                    breakSearch = true;
-                    break;
-                }
-                else if(empty){
+                if(empty){
                     breakSearch = true;
                     targetRow = row - 1;
                     targetCol = col - 1;

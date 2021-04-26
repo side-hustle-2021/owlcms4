@@ -93,6 +93,14 @@ public class RuleViolation {
         return new RuleViolationException("RuleViolation.wobViolated", objs);
     }
 
+    public static RuleViolationException declarationTimeExceeded(Object... objs) {
+        return new RuleViolationException("RuleViolation.declarationTimeExceeded", objs);
+    }
+
+    public static RuleViolationException declarationNotAllowed(Object... objs) {
+        return new RuleViolationException("RuleViolation.declarationNotAllowed", objs);
+    }
+
 //	public static RuleViolationException declarationValueRequired(int curLift) {
 //		 return new RuleViolationException("RuleViolation.declarationRequired");
 //	}
