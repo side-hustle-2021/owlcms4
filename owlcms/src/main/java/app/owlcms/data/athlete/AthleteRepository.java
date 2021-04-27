@@ -166,6 +166,82 @@ public class AthleteRepository {
             .setParameter("customuser", customuser)
             .getResultList());
     }
+    
+    public static void updateSnatch2FromAP(Athlete athlete){
+        athlete.setSnatch2Declaration(athlete.getSnatch2AutomaticProgression());
+        athlete.setSnatch2Change1(athlete.getSnatch2AutomaticProgression());
+        athlete.setSnatch2Change2(athlete.getSnatch2AutomaticProgression());
+        
+        JPAService.runInTransaction(em -> 
+            em.createQuery(
+                "update Athlete a set a.snatch2Declaration=:declaration, " +
+                "a.snatch2Change1=:change1, a.snatch2Change2=:change2 "+
+                "where a.id=:id"
+            )
+            .setParameter("declaration", athlete.getSnatch2Declaration())
+            .setParameter("change1", athlete.getSnatch2Change1())
+            .setParameter("change2", athlete.getSnatch2Change2())
+            .setParameter("id", athlete.getId())
+            .executeUpdate()
+        );
+    }
+
+    public static void updateSnatch3FromAP(Athlete athlete){
+        athlete.setSnatch3Declaration(athlete.getSnatch3AutomaticProgression());
+        athlete.setSnatch3Change1(athlete.getSnatch3AutomaticProgression());
+        athlete.setSnatch3Change2(athlete.getSnatch3AutomaticProgression());
+        
+        JPAService.runInTransaction(em -> 
+            em.createQuery(
+                "update Athlete a set a.snatch3Declaration=:declaration, " +
+                "a.snatch3Change1=:change1, a.snatch2Change2=:change2 " +
+                "where a.id=:id"
+            )
+            .setParameter("declaration", athlete.getSnatch3Declaration())
+            .setParameter("change1", athlete.getSnatch3Change1())
+            .setParameter("change2", athlete.getSnatch3Change2())
+            .setParameter("id", athlete.getId())
+            .executeUpdate()
+        );
+    }
+
+    public static void updateCleanJerk2FromAP(Athlete athlete){
+        athlete.setCleanJerk2Declaration(athlete.getCleanJerk2AutomaticProgression());
+        athlete.setCleanJerk2Change1(athlete.getCleanJerk2AutomaticProgression());
+        athlete.setCleanJerk2Change2(athlete.getCleanJerk2AutomaticProgression());
+        
+        JPAService.runInTransaction(em -> 
+            em.createQuery(
+                "update Athlete a set a.cleanJerk2Declaration=:declaration, " +
+                "a.cleanJerk2Change1=:change1, a.cleanJerk2Change2=:change2 " +
+                "where a.id=:id"
+            )
+            .setParameter("declaration", athlete.getCleanJerk2Declaration())
+            .setParameter("change1", athlete.getCleanJerk2Change1())
+            .setParameter("change2", athlete.getCleanJerk2Change2())
+            .setParameter("id", athlete.getId())
+            .executeUpdate()
+        );
+    }
+
+    public static void updateCleanJerk3FromAP(Athlete athlete){
+        athlete.setCleanJerk3Declaration(athlete.getCleanJerk3AutomaticProgression());
+        athlete.setCleanJerk3Change1(athlete.getCleanJerk3AutomaticProgression());
+        athlete.setCleanJerk3Change2(athlete.getCleanJerk3AutomaticProgression());
+        
+        JPAService.runInTransaction(em -> 
+            em.createQuery(
+                "update Athlete a set a.cleanJerk3Declaration=:declaration, " +
+                "a.cleanJerk3Change1=:change1, a.cleanJerk3Change2=:change2 " +
+                "where a.id=:id"
+            )
+            .setParameter("declaration", athlete.getCleanJerk3Declaration())
+            .setParameter("change1", athlete.getCleanJerk3Change1())
+            .setParameter("change2", athlete.getCleanJerk3Change2())
+            .setParameter("id", athlete.getId())
+            .executeUpdate()
+        );
+    }
 
     /**
      * Find filtered.

@@ -90,8 +90,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField snatch2Declaration = createPositiveWeightField(DECLARATION, SNATCH2);
         binder.forField(snatch2Declaration)
-                .withValidator(
-                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(2, getEditedAthlete())))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(2, v)))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(2)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -137,8 +137,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField snatch3Declaration = createPositiveWeightField(DECLARATION, SNATCH3);
         binder.forField(snatch3Declaration)
-                .withValidator(
-                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(3, getEditedAthlete())))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(3, v)))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(3)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -178,8 +178,6 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField cj1Declaration = createPositiveWeightField(DECLARATION, CJ1);
         binder.forField(cj1Declaration)
-                .withValidator(
-                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(4, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -227,8 +225,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField cj2Declaration = createPositiveWeightField(DECLARATION, CJ2);
         binder.forField(cj2Declaration)
-                .withValidator(
-                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(5, getEditedAthlete())))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(5, v)))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(5)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -276,8 +274,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
         TextField cj3Declaration = createPositiveWeightField(DECLARATION, CJ3);
         binder.forField(cj3Declaration)
-                .withValidator(
-                    ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(6, getEditedAthlete())))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(6, v)))
+                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(6)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -426,7 +424,4 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         footerLayout.setFlexGrow(1.0, spacer);
         return footerLayout;
     }
-   
-
-
 }
