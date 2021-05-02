@@ -30,6 +30,12 @@ import app.owlcms.ui.shared.IAthleteEditing;
 @SuppressWarnings("serial")
 public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
 
+    TextField snatch2Declaration;
+    TextField snatch3Declaration;
+    TextField cj1Declaration;
+    TextField cj2Declaration;
+    TextField cj3Declaration;
+
     public AthleteCardDedicatedFormFactory(Class<Athlete> domainType, IAthleteEditing origin) {
         super(domainType, origin);
     }
@@ -88,10 +94,9 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 Athlete::setSnatch2AutomaticProgression);
         atRowAndColumn(gridLayout, snatch2AutomaticProgression, AUTOMATIC, SNATCH2);
 
-        TextField snatch2Declaration = createPositiveWeightField(DECLARATION, SNATCH2);
+        snatch2Declaration = createPositiveWeightField(DECLARATION, SNATCH2);
         binder.forField(snatch2Declaration)
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(2, v)))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(2)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -135,10 +140,9 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 Athlete::setSnatch3AutomaticProgression);
         atRowAndColumn(gridLayout, snatch3AutomaticProgression, AUTOMATIC, SNATCH3);
 
-        TextField snatch3Declaration = createPositiveWeightField(DECLARATION, SNATCH3);
+        snatch3Declaration = createPositiveWeightField(DECLARATION, SNATCH3);
         binder.forField(snatch3Declaration)
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(3, v)))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(3)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -176,7 +180,7 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         atRowAndColumn(gridLayout, snatch3ActualLift, ACTUAL, SNATCH3);
         snatch3ActualLift.setReadOnly(true);
 
-        TextField cj1Declaration = createPositiveWeightField(DECLARATION, CJ1);
+        cj1Declaration = createPositiveWeightField(DECLARATION, CJ1);
         binder.forField(cj1Declaration)
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
@@ -223,10 +227,9 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 Athlete::setCleanJerk2AutomaticProgression);
         atRowAndColumn(gridLayout, cj2AutomaticProgression, AUTOMATIC, CJ2);
 
-        TextField cj2Declaration = createPositiveWeightField(DECLARATION, CJ2);
+        cj2Declaration = createPositiveWeightField(DECLARATION, CJ2);
         binder.forField(cj2Declaration)
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(5, v)))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(5)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -272,10 +275,9 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 Athlete::setCleanJerk3AutomaticProgression);
         atRowAndColumn(gridLayout, cj3AutomaticProgression, AUTOMATIC, CJ3);
 
-        TextField cj3Declaration = createPositiveWeightField(DECLARATION, CJ3);
+        cj3Declaration = createPositiveWeightField(DECLARATION, CJ3);
         binder.forField(cj3Declaration)
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDeclarationTime(6, v)))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validatePreviousAttempt(6)))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
                 .withValidator(
@@ -326,6 +328,7 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         // routines in the
         // Athlete class don't work
         binder.setBean(getEditedAthlete());
+        setAutomaticDeclarations();
         setAllReadOnly();
         setFocus(getEditedAthlete());
     }
@@ -361,6 +364,9 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         for (int col=leftCol; col<=rightCol && !breakSearch; col++){
             if (!textfields[ACTUAL-1][col - 1].isEmpty()){
                 continue;
+            }
+            else if (col > leftCol && textfields[ACTUAL-1][col - 2].isEmpty()){
+                breakSearch = true;
             }
             for (int row=AUTOMATIC+1; row<ACTUAL && !breakSearch; row++) {
                 boolean empty = textfields[row - 1][col - 1].isEmpty();
@@ -423,5 +429,23 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
         }
         footerLayout.setFlexGrow(1.0, spacer);
         return footerLayout;
+    }
+
+    protected void setAutomaticDeclarations(){
+        if (!snatch1ActualLift.getValue().isEmpty() && snatch2Declaration.getValue().isEmpty()) {
+            snatch2Declaration.setValue(snatch2AutomaticProgression.getValue());
+        }
+        
+        if (!snatch2ActualLift.getValue().isEmpty() && snatch3Declaration.getValue().isEmpty()) {
+            snatch3Declaration.setValue(snatch3AutomaticProgression.getValue());
+        }
+
+        if (!cj1ActualLift.getValue().isEmpty() && cj2Declaration.getValue().isEmpty()) {
+            cj2Declaration.setValue(cj2AutomaticProgression.getValue());
+        }
+
+        if (!cj2ActualLift.getValue().isEmpty() && cj3Declaration.getValue().isEmpty()) {
+            cj3Declaration.setValue(cj3AutomaticProgression.getValue());
+        }
     }
 }
