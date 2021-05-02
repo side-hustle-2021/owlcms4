@@ -101,6 +101,14 @@ public class RuleViolation {
         return new RuleViolationException("RuleViolation.declarationNotAllowed", objs);
     }
 
+    public static RuleViolationException uniqueChange1Violation(Object... objs) {
+        return new RuleViolationException("RuleViolation.uniqueChange1Violation", objs);
+    }
+
+    public static RuleViolationException uniqueChange2Violation(Object... objs) {
+        return new RuleViolationException("RuleViolation.uniqueChange2Violation", objs);
+    }
+
 //	public static RuleViolationException declarationValueRequired(int curLift) {
 //		 return new RuleViolationException("RuleViolation.declarationRequired");
 //	}
