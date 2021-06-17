@@ -912,7 +912,7 @@ public class FieldOfPlay {
         updateGlobalRankings();
     }
 
-    private Athlete getClockOwner() {
+    public Athlete getClockOwner() {
         return clockOwner;
     }
 

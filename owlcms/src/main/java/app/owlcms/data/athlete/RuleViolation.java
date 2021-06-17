@@ -109,6 +109,10 @@ public class RuleViolation {
         return new RuleViolationException("RuleViolation.uniqueChange2Violation", objs);
     }
 
+    public static RuleViolationException changeTimeExceeded(Object... objs) {
+        return new RuleViolationException("RuleViolation.changeTimeExceeded", objs);
+    }
+
 //	public static RuleViolationException declarationValueRequired(int curLift) {
 //		 return new RuleViolationException("RuleViolation.declarationRequired");
 //	}

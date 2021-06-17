@@ -13,13 +13,9 @@ public class AthleteCardRules {
 
     public static boolean validateWobRule(String requestedWeight, Athlete editingAthlete){
         OwlcmsSession.withFop((fop) -> {
-            Athlete curAthlete = fop.getCurAthlete();
             int curWeight = fop.getCurWeight();
-            if (
-                (Athlete.zeroIfInvalid(requestedWeight) < curWeight) && 
-                (!(editingAthlete.getUsername().equals(curAthlete.getUsername())
-                ))
-            ) {
+            if (Athlete.zeroIfInvalid(requestedWeight) < curWeight)
+            {
                 RuleViolationException ruleWobViolated = null;
                 ruleWobViolated = RuleViolation.wobViolated(
                     requestedWeight, Integer.toString(curWeight)
@@ -211,6 +207,32 @@ public class AthleteCardRules {
                     RuleViolationException ruleChange2MustBeUnique = null;
                     ruleChange2MustBeUnique = RuleViolation.uniqueChange2Violation();
                     throw ruleChange2MustBeUnique;
+            }
+        });
+        return true;
+    }
+
+    public static boolean validateNextAthleteChangeTime(String currentChange){
+        OwlcmsSession.withFop((fop) -> {
+            Athlete curAthlete = fop.getCurAthlete();
+            Athlete clockOwner = fop.getClockOwner();
+
+            if ((clockOwner != null) && 
+                (clockOwner.getUsername().equals(curAthlete.getUsername())) &&
+                (fop.getAthleteTimer().isRunning())
+            ){
+                fop.getAthleteTimer().stop();
+                Integer timeRemaining = fop.getAthleteTimer().getTimeRemaining();
+                fop.getAthleteTimer().start();
+                Integer totalTimeAllowed;
+                totalTimeAllowed = (clockOwner.getAttemptNumber() == 1) ? 60000 : 120000;
+                
+                Integer timeElapsed = totalTimeAllowed - timeRemaining;
+                if (timeElapsed > 30000){
+                    RuleViolationException ruleChangeTimeExceeded = null;
+                    ruleChangeTimeExceeded = RuleViolation.changeTimeExceeded();
+                    throw ruleChangeTimeExceeded;
+                }
             }
         });
         return true;
