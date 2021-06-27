@@ -212,14 +212,12 @@ public class AthleteCardRules {
         return true;
     }
 
-    public static boolean validateNextAthleteChangeTime(String currentChange){
+    public static boolean validateNextAthleteChangeTime(String currentChange, Athlete editedAthlete){
         OwlcmsSession.withFop((fop) -> {
-            Athlete curAthlete = fop.getCurAthlete();
             Athlete clockOwner = fop.getClockOwner();
 
             if ((clockOwner != null) && 
-                (clockOwner.getUsername().equals(curAthlete.getUsername())) &&
-                (fop.getAthleteTimer().isRunning())
+                (clockOwner.getUsername().equals(editedAthlete.getUsername()))
             ){
                 fop.getAthleteTimer().stop();
                 Integer timeRemaining = fop.getAthleteTimer().getTimeRemaining();
