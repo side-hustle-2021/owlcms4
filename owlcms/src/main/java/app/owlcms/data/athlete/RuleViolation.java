@@ -113,6 +113,10 @@ public class RuleViolation {
         return new RuleViolationException("RuleViolation.changeTimeExceeded", objs);
     }
 
+    public static RuleViolationException cannotProcessChange(Object... objs) {
+        return new RuleViolationException("RuleViolation.cannotProcessChange", objs);
+    }
+
 //	public static RuleViolationException declarationValueRequired(int curLift) {
 //		 return new RuleViolationException("RuleViolation.declarationRequired");
 //	}

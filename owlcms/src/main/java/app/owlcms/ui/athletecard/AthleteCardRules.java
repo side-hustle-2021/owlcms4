@@ -7,6 +7,7 @@ import app.owlcms.data.athlete.Athlete;
 import app.owlcms.data.athlete.AthleteRepository;
 import app.owlcms.data.athlete.RuleViolation;
 import app.owlcms.data.athlete.RuleViolationException;
+import app.owlcms.data.customlogin.CustomUserRepository;
 import app.owlcms.init.OwlcmsSession;
 
 public class AthleteCardRules {
@@ -233,6 +234,19 @@ public class AthleteCardRules {
                 }
             }
         });
+        return true;
+    }
+
+    public static boolean validateChangeForAttempt(int currentAttempt, Athlete editedAthlete){
+        Athlete fetchedAthlete = AthleteRepository.getAthleteByUsername(
+            CustomUserRepository.getByUsername(editedAthlete.getUsername())
+        );
+
+        if (currentAttempt <= fetchedAthlete.getAttemptsDone()){
+            RuleViolationException ruleCannotProcessChange = null;
+            ruleCannotProcessChange = RuleViolation.cannotProcessChange();
+            throw ruleCannotProcessChange;
+        }
         return true;
     }
 }
