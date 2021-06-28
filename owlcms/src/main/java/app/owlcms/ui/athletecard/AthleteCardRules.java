@@ -110,43 +110,43 @@ public class AthleteCardRules {
         }
     }
 
-    public static boolean validateDistinctChange1(int currentAttempt, String currentChange1){
+    public static boolean validateDistinctChange1(
+        int currentAttempt, String currentChange1, Athlete editingAthlete
+    ){
         OwlcmsSession.withFop((fop) -> {
-            Athlete curAthlete = fop.getCurAthlete();
-
             switch (currentAttempt){
                 case 1:
-                    if (curAthlete.getSnatch1Declaration().equals(currentChange1)) {
-                        validateDistinctChange1(-1, "");
+                    if (editingAthlete.getSnatch1Declaration().equals(currentChange1)) {
+                        validateDistinctChange1(-1, "", editingAthlete);
                     }
                     break;
                 case 2:
-                    if (curAthlete.getSnatch2AutomaticProgression().equals(currentChange1) ||
-                        curAthlete.getSnatch2Declaration().equals(currentChange1)) {
-                        validateDistinctChange1(-1, "");
+                    if (editingAthlete.getSnatch2AutomaticProgression().equals(currentChange1) ||
+                        editingAthlete.getSnatch2Declaration().equals(currentChange1)) {
+                        validateDistinctChange1(-1, "", editingAthlete);
                     }
                     break;
                 case 3:
-                    if (curAthlete.getSnatch3AutomaticProgression().equals(currentChange1) ||
-                        curAthlete.getSnatch3Declaration().equals(currentChange1)) {
-                        validateDistinctChange1(-1, "");
+                    if (editingAthlete.getSnatch3AutomaticProgression().equals(currentChange1) ||
+                        editingAthlete.getSnatch3Declaration().equals(currentChange1)) {
+                        validateDistinctChange1(-1, "", editingAthlete);
                     }
                     break;
                 case 4:
-                    if (curAthlete.getCleanJerk1Declaration().equals(currentChange1)) {
-                        validateDistinctChange1(-1, "");
+                    if (editingAthlete.getCleanJerk1Declaration().equals(currentChange1)) {
+                        validateDistinctChange1(-1, "", editingAthlete);
                     }
                     break;
                 case 5:
-                    if (curAthlete.getCleanJerk2AutomaticProgression().equals(currentChange1) ||
-                        curAthlete.getCleanJerk2Declaration().equals(currentChange1)) {
-                        validateDistinctChange1(-1, "");
+                    if (editingAthlete.getCleanJerk2AutomaticProgression().equals(currentChange1) ||
+                        editingAthlete.getCleanJerk2Declaration().equals(currentChange1)) {
+                        validateDistinctChange1(-1, "", editingAthlete);
                     }
                     break;
                 case 6:
-                    if (curAthlete.getCleanJerk3AutomaticProgression().equals(currentChange1) ||
-                        curAthlete.getCleanJerk3Declaration().equals(currentChange1)) {
-                        validateDistinctChange1(-1, "");
+                    if (editingAthlete.getCleanJerk3AutomaticProgression().equals(currentChange1) ||
+                        editingAthlete.getCleanJerk3Declaration().equals(currentChange1)) {
+                        validateDistinctChange1(-1, "", editingAthlete);
                     }
                     break;
                 default:
@@ -158,50 +158,51 @@ public class AthleteCardRules {
         return true;
     }
 
-    public static boolean validateDistinctChange2(int currentAttempt, String currentChange2){
+    public static boolean validateDistinctChange2(
+        int currentAttempt, String currentChange2, Athlete editingAthlete
+    ){
         OwlcmsSession.withFop((fop) -> {
-            Athlete curAthlete = fop.getCurAthlete();
 
             switch (currentAttempt){
                 case 1:
-                    if (curAthlete.getSnatch1Declaration().equals(currentChange2) || 
-                        curAthlete.getSnatch1Change1().equals(currentChange2)) {
-                        validateDistinctChange2(-1, "");
+                    if (editingAthlete.getSnatch1Declaration().equals(currentChange2) || 
+                        editingAthlete.getSnatch1Change1().equals(currentChange2)) {
+                        validateDistinctChange2(-1, "", editingAthlete);
                     }
                     break;
                 case 2:
-                    if (curAthlete.getSnatch2AutomaticProgression().equals(currentChange2) ||
-                        curAthlete.getSnatch2Declaration().equals(currentChange2) ||
-                        curAthlete.getSnatch2Change1().equals(currentChange2)) {
-                        validateDistinctChange2(-1, "");
+                    if (editingAthlete.getSnatch2AutomaticProgression().equals(currentChange2) ||
+                        editingAthlete.getSnatch2Declaration().equals(currentChange2) ||
+                        editingAthlete.getSnatch2Change1().equals(currentChange2)) {
+                        validateDistinctChange2(-1, "", editingAthlete);
                     }
                     break;
                 case 3:
-                    if (curAthlete.getSnatch3AutomaticProgression().equals(currentChange2) ||
-                        curAthlete.getSnatch3Declaration().equals(currentChange2) ||
-                        curAthlete.getSnatch3Change1().equals(currentChange2)) {
-                        validateDistinctChange2(-1, "");
+                    if (editingAthlete.getSnatch3AutomaticProgression().equals(currentChange2) ||
+                        editingAthlete.getSnatch3Declaration().equals(currentChange2) ||
+                        editingAthlete.getSnatch3Change1().equals(currentChange2)) {
+                        validateDistinctChange2(-1, "", editingAthlete);
                     }
                     break;
 
                 case 4:
-                    if (curAthlete.getCleanJerk1Declaration().equals(currentChange2) ||
-                        curAthlete.getCleanJerk1Change1().equals(currentChange2)) {
-                        validateDistinctChange2(-1, "");
+                    if (editingAthlete.getCleanJerk1Declaration().equals(currentChange2) ||
+                        editingAthlete.getCleanJerk1Change1().equals(currentChange2)) {
+                        validateDistinctChange2(-1, "", editingAthlete);
                     }
                     break;
                 case 5:
-                    if (curAthlete.getCleanJerk2AutomaticProgression().equals(currentChange2) ||
-                        curAthlete.getCleanJerk2Declaration().equals(currentChange2) ||
-                        curAthlete.getCleanJerk2Change1().equals(currentChange2)) {
-                        validateDistinctChange2(-1, "");
+                    if (editingAthlete.getCleanJerk2AutomaticProgression().equals(currentChange2) ||
+                        editingAthlete.getCleanJerk2Declaration().equals(currentChange2) ||
+                        editingAthlete.getCleanJerk2Change1().equals(currentChange2)) {
+                        validateDistinctChange2(-1, "", editingAthlete);
                     }
                     break;
                 case 6:
-                    if (curAthlete.getCleanJerk3AutomaticProgression().equals(currentChange2) ||
-                        curAthlete.getCleanJerk3Declaration().equals(currentChange2) ||
-                        curAthlete.getCleanJerk3Change1().equals(currentChange2)) {
-                        validateDistinctChange2(-1, "");
+                    if (editingAthlete.getCleanJerk3AutomaticProgression().equals(currentChange2) ||
+                        editingAthlete.getCleanJerk3Declaration().equals(currentChange2) ||
+                        editingAthlete.getCleanJerk3Change1().equals(currentChange2)) {
+                        validateDistinctChange2(-1, "", editingAthlete);
                     }
                     break;
                 default:

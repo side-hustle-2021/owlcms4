@@ -63,7 +63,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(1, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(1, v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch1Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch1Change1, Athlete::setSnatch1Change1);
@@ -75,7 +76,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(1, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(1, v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch1Change2(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch1Change2, Athlete::setSnatch1Change2);
@@ -112,7 +114,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(2, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(2, v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch2Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch2Change1, Athlete::setSnatch2Change1);
@@ -124,7 +127,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(2, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(2, v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch2Change2(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch2Change2, Athlete::setSnatch2Change2);
@@ -161,7 +165,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(3, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(3, v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3Change1(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch3Change1, Athlete::setSnatch3Change1);
@@ -173,7 +178,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(3, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(3, v, getEditedAthlete())))
                 .withValidator(ValidationUtils.checkUsingException(v -> getEditedAthlete().validateSnatch3Change2(v)))
                 .withValidationStatusHandler(status -> {
                 }).bind(Athlete::getSnatch3Change2, Athlete::setSnatch3Change2);
@@ -204,7 +210,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(4, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(4, v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk1Change1(v)))
                 .withValidationStatusHandler(status -> {
@@ -217,7 +224,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(4, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(4, v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk1Change2(v)))
                 .withValidationStatusHandler(status -> {
@@ -255,7 +263,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(5, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(5, v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk2Change1(v)))
                 .withValidationStatusHandler(status -> {
@@ -268,7 +277,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(5, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(5, v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk2Change2(v)))
                 .withValidationStatusHandler(status -> {
@@ -306,7 +316,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(6, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange1(6, v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk3Change1(v)))
                 .withValidationStatusHandler(status -> {
@@ -319,7 +330,8 @@ public class AthleteCardDedicatedFormFactory extends AthleteCardFormFactory {
                 .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateNextAthleteChangeTime(v, getEditedAthlete())))
                 .withValidator(
                     ValidationUtils.checkUsingException(v -> AthleteCardRules.validateWobRule(v, getEditedAthlete())))
-                .withValidator(ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(6, v)))
+                .withValidator(
+                        ValidationUtils.checkUsingException(v -> AthleteCardRules.validateDistinctChange2(6, v, getEditedAthlete())))
                 .withValidator(
                         ValidationUtils.checkUsingException(v -> getEditedAthlete().validateCleanJerk3Change2(v)))
                 .withValidationStatusHandler(status -> {
