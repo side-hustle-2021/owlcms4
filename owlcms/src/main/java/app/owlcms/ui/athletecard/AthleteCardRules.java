@@ -224,11 +224,8 @@ public class AthleteCardRules {
                 fop.getAthleteTimer().stop();
                 Integer timeRemaining = fop.getAthleteTimer().getTimeRemaining();
                 fop.getAthleteTimer().start();
-                Integer totalTimeAllowed;
-                totalTimeAllowed = (clockOwner.getAttemptNumber() == 1) ? 60000 : 120000;
                 
-                Integer timeElapsed = totalTimeAllowed - timeRemaining;
-                if (timeElapsed > 30000){
+                if (timeRemaining < 30000){
                     RuleViolationException ruleChangeTimeExceeded = null;
                     ruleChangeTimeExceeded = RuleViolation.changeTimeExceeded();
                     throw ruleChangeTimeExceeded;
